@@ -4,8 +4,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Model_status extends CI_Model
 {
 	var $table = 'tb_status';
-
-
 	public function __construct()
 	{
 		parent::__construct();

@@ -24,9 +24,7 @@ class Admin extends CI_Controller
 		}
 		$this->data['user'] = $this->session->userdata()['userdata']['0'];
 		$this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
-		if ($this->data['user']['status_name'] != 'Admin') {
-			
-		}
+		if ($this->data['user']['status_name'] != 'Admin') { }
 		$this->data['IMPORTANT'] = $this->mus->IMPORTANT();
 
 		// print_r($_SESSION);
@@ -139,7 +137,7 @@ class Admin extends CI_Controller
 		}
 		for ($i = 2; $i <= $jumlah_baris; $i++) {
 			// menangkap data dan memasukkan ke variabel sesuai dengan kolumnya masing-masing
-			
+
 			if (isset($data[$i][$cust_name_col])) $cust_name = $data[$i][$cust_name_col];
 			else $cust_name = "";
 			if (isset($data[$i][$cust_segment_col])) $cust_segment = $data[$i][$cust_segment_col];
@@ -330,7 +328,7 @@ class Admin extends CI_Controller
 	public function delete_image($id)
 	{
 		$hasil = $this->mus->delete_image($id);
-		if($hasil == 0)
+		if ($hasil == 0)
 			$this->session->set_flashdata("msg_s", "Gagal hapus gambar");
 		else
 			$this->session->set_flashdata("msg_s", "Berhasil hapus gambar");
@@ -340,6 +338,9 @@ class Admin extends CI_Controller
 	public function test($page = null)
 	{
 		$this->load->view('admin/header', $this->data);
+		var_dump($this->data);
+		echo "<br>";
+		print_r($this->data);
 		// $this->load->view('admin/test', $this->data);
 		$this->load->view('admin/footer');
 	}
@@ -347,7 +348,7 @@ class Admin extends CI_Controller
 	function pindah_gambar($files, $id)
 	{
 		$target = basename($files['photo']['name']);
-		$name = "user$id"."_$target";
+		$name = "user$id" . "_$target";
 		move_uploaded_file($files['photo']['tmp_name'], "./uploads/$name");
 		return $name;
 	}
