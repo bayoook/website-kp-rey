@@ -19,7 +19,7 @@ class Admin extends CI_Controller
 
 		$this->load->library('session');
 		if (!$this->session->userdata("login")) {
-			$this->session->set_flashdata("msg", "<div id='alert' class='alert alert-warning alert-dismissable'><button class='close' aria-hidden='true' data-dismiss='alert' type='button'>×</button><h4><i class='fa fa-exclamation-circle'></i> Warning</h4><p style='font-size:20px;'>Maaf Anda Harus Login !!!</p></div>");
+			$this->session->set_flashdata("msg_f", "Maaf anda harus login");
 			redirect("account/login");
 		}
 		$this->data['user'] = $this->session->userdata()['userdata']['0'];
@@ -42,7 +42,7 @@ class Admin extends CI_Controller
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect('admin');
+		redirect('account/login');
 	}
 	public function index()
 	{
@@ -192,7 +192,7 @@ class Admin extends CI_Controller
 		}
 		// hapus kembali file .xls yang di upload tadi
 		unlink($_FILES['uploadfile']['name']);
-		$this->session->set_flashdata('msg', "Berhasil Upload $berhasil data");
+		$this->session->set_flashdata('msg_s', "Berhasil Upload $berhasil data");
 		redirect('admin/dashboard');
 	}
 	public function ubah($type, $id = null, $photo = null)
@@ -238,7 +238,8 @@ class Admin extends CI_Controller
 				);
 				if ($id = $this->mus->save($akun)) {
 					$form['photo'] = $this->pindah_gambar($_FILES, $id);
-					$this->mus->update(array('photo' => $form['photo']), array('id' => $id));
+					if ($form['photo'] != 'user' . $id . '_')
+						$this->mus->update(array('photo' => $form['photo']), array('id' => $id));
 					$this->session->set_flashdata("msg_s", 'Berhasil Tambah User');
 					redirect(base_url('admin/user'));
 				} else {
@@ -258,7 +259,7 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[3]');
 		if (!$this->form_validation->run()) {
-			$this->session->set_flashdata('feedback', validation_errors());
+			$this->session->set_flashdata('msg_f', validation_errors());
 			redirect('admin/ubah/edit/' . $id);
 		} else {
 			$form = $this->input->post();
@@ -356,7 +357,6 @@ class Admin extends CI_Controller
 	{
 		$this->mus->update(array('photo' => null), $id);
 		$target = $this->pindah_gambar($_FILES, $id);
-
 		$this->session->set_flashdata($target);
 		if ($id == 0)
 			redirect('admin/user/');

@@ -19,7 +19,12 @@
     <meta name="twitter:description" content="Mantap">
     <link rel="stylesheet" href="<?= base_url() ?>assets/bootstrap/css/bootstrap.min.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="<?= base_url() ?>assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/untitled.css">
 </head>
+
+<body class="bg-gradient-primary">
+    <div class="flash-data-s" data-flashdata="<?= $_SESSION['msg_s']; ?>"></div>
+    <div class="flash-data-f" data-flashdata="<?= $_SESSION['msg_f']; ?>"></div>
