@@ -192,7 +192,7 @@ class Admin extends CI_Controller
 		}
 		// hapus kembali file .xls yang di upload tadi
 		unlink($_FILES['uploadfile']['name']);
-		$this->session->set_flashdata('msg', "Berhasil Upload $berhasil data");
+		$this->session->set_flashdata('msg_s', "Berhasil Upload $berhasil data");
 		redirect('admin/dashboard');
 	}
 	public function ubah($type, $id = null, $photo = null)
