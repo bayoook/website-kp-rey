@@ -12,17 +12,11 @@ class Account extends CI_Controller
         $this->data = array(
             "assets_url" => $assets_url
         );
-
-
-
         error_reporting(error_reporting() & ~E_NOTICE);
-
         $this->load->library('form_validation');
         $this->load->library('session');
         $this->load->model("model_user", "mus");
-
         if ($this->session->userdata("login")) {
-            $this->session->set_flashdata("msg", "<div id='alert' class='alert alert-warning alert-dismissable'><button class='close' aria-hidden='true' data-dismiss='alert' type='button'>×</button><h4><i class='fa fa-exclamation-circle'></i> Warning</h4><p style='font-size:20px;'>Maaf Anda Harus Login !!!</p></div>");
             redirect("admin");
         }
     }
@@ -58,10 +52,9 @@ class Account extends CI_Controller
                 $this->session->set_userdata('login', '1');
                 redirect('admin');
             } else {
-                echo "<script>alert('User tidak ditemukan');window.location.href='';</script>";
+                $this->session->set_flashdata("msg_f", "Username atau password anda tidak ditemukan");
+                redirect('account/login');
             }
         }
     }
-
-    
 }

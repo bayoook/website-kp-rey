@@ -193,9 +193,10 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item " role="presentation"
                                         href="<?= base_url() ?>admin/profile/<?= $user['id'] ?>">
-                                        i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Edit Profile
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Edit Profile
                                     </a>
-                                    <a class="dropdown-item" role="presentation" href="<?= base_url() ?>admin/logout">
+                                    <a class="dropdown-item user-logout" role="presentation"
+                                        href="<?= base_url() ?>admin/logout">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout
                                     </a>
                                 </div>
@@ -205,16 +206,16 @@
                     </div>
                 </nav>
                 <!-- <?php if (isset($_SESSION['msg_s'])) { ?>
-                                                                <div class="container-fluid text-center"
-                                                                    style="background-color:aquamarine; margin-top:-23px; margin-bottom:10px; padding-top:20px; padding-bottom:3px">
-                                                                    <h4 style="margin-top:-10px"><?= $_SESSION['msg_s'] ?></h4>
-                                                                </div>
+                    <div class="container-fluid text-center"
+                        style="background-color:aquamarine; margin-top:-23px; margin-bottom:10px; padding-top:20px; padding-bottom:3px">
+                        <h4 style="margin-top:-10px"><?= $_SESSION['msg_s'] ?></h4>
+                    </div>
                 <?php } ?>
                 <?php if (isset($_SESSION['msg_f'])) { ?>
-                                                                <div class="container-fluid text-center"
-                                                                    style="background-color:pink; margin-top:-23px; margin-bottom:10px; padding-top:20px; padding-bottom:3px">
-                                                                    <h4 style="margin-top:-10px"><?= $_SESSION['msg_f'] ?></h4>
-                                                                </div>
+                    <div class="container-fluid text-center"
+                        style="background-color:pink; margin-top:-23px; margin-bottom:10px; padding-top:20px; padding-bottom:3px">
+                        <h4 style="margin-top:-10px"><?= $_SESSION['msg_f'] ?></h4>
+                    </div>
                 <?php } ?> -->
                 <div class="flash-data-s" data-flashdata="<?= $_SESSION['msg_s']; ?>"></div>
                 <div class="flash-data-f" data-flashdata="<?= $_SESSION['msg_f']; ?>"></div>

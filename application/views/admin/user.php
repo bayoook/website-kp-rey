@@ -30,8 +30,7 @@
                                     foreach ($user_all as $rows) { ?>
                                     <tr>
                                         <td><img class="rounded-circle mr-2" width="30" height="30"
-                                                src="<?= base_url() . 'uploads/' ?><?php if ($rows['photo'] != "" or $rows['photo'] != null)
-                                                                                                                                                echo $rows['photo'];
+                                                src="<?= base_url() . 'uploads/' ?><?php if ($rows['photo'] != "" or $rows['photo'] != null) echo $rows['photo'];
                                                                                                                                             else echo "avatar-default.png"; ?>">
                                             <?= $rows['username'] ?></td>
                                         <td><?= $rows['first_name'] . ' ' . $rows['last_name'] ?></td>
@@ -44,9 +43,8 @@
                                             <a href="<?= base_url() ?>admin/ubah/edit/<?= $rows['id'] ?>"
                                                 class="btn btn-info btn-sm"><i class="far fa-edit"></i></a>
                                             <a href="<?= base_url() ?>admin/delete_user/<?= $rows['id'] ?>"
-                                                class="btn btn-danger btn-sm <?php if ($rows['id'] == $user['id']) echo "disabled" ?>"
-                                                onclick="if(confirm('Apakah yakin Hapus user <?php echo $rows['username']; ?>?')) commentDelete(1); return false"><i
-                                                    class="far fa-trash-alt"></i></a>
+                                                class="btn btn-danger btn-sm <?php if ($rows['id'] == $user['id']) echo "disabled" ?> delete-button"
+                                                value="<?= $rows['username'] ?>"><i class=" far fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                     <?php } ?>

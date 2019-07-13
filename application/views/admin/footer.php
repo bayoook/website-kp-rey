@@ -17,7 +17,9 @@
 </script>
 <script type="text/javascript" charset="utf8"
     src="<?= base_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
 <script src="<?= base_url() ?>assets/js/script.js"></script>
 <script src="<?= base_url() ?>assets/js/theme.js"></script>
 <script src="<?= base_url() ?>assets/js/demo/datatables-demo.js"></script>
