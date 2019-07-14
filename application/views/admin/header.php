@@ -11,12 +11,11 @@
                 echo 'No Title' ?>
         - <?= $_SESSION['IMPORTANT_P'] ?></title>
     <link rel="stylesheet" href="<?= base_url() ?>assets/bootstrap/css/bootstrap.min.css">
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="<?= base_url() ?>assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/untitled.css">
-    <link href="<?= base_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.css">
     
 </head>
 
@@ -102,9 +101,6 @@
                                     <a class="dropdown-item text-success disabled" role="presentation"
                                         style="margin-top:-10px">
                                         <?= $user['email'] ?>
-                                    </a>
-                                    <a class="dropdown-ite disabled" role="presentation" style="margin-top:-10px">
-                                        <?= $user['status_name'] ?>
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item " role="presentation"
