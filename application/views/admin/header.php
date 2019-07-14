@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/untitled.css">
     <link href="<?= base_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
 </head>
 
 <body id="page-top">
