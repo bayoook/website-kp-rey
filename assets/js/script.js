@@ -50,4 +50,29 @@ $('.user-logout').on('click', function (e) {
         }
     });
 });
+const tampil = $('.tampil');
+if(tampil){
+    var table2 = document.getElementById('table');
+    var butShow = document.getElementById('tampil');
+    var butSpan = document.getElementById('butSpan');
+    butShow.onclick = displayTable;
+    const table = $('#table');
+    var batas = $(".bottomView").offset();
+    function displayTable() {
+        if (table2.style.display != "none") {
+            table.slideUp(1000);
+            // console.log('asd : ', $('html, body').get(0).scrollHeight - table.get(0).scrollHeight - $('footer').get(0).scrollHeight - 44);
+            // table2.style.display = "none";
+            butSpan.innerHTML = "Show Table"
+        } else {
+            $("html, body").animate({
+                scrollTop: batas.top - 15
+                // scrollTop: 640
+            }, 1000);
+            table.slideDown(1000);
+            // table2.style.display = "";
+            butSpan.innerHTML = "Hide Table";
+        }
+    }
+}
 

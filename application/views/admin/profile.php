@@ -22,13 +22,13 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="form-row">
-                                                <div class="col">
+                                                <div class="col-md-6">
                                                     <div class="form-group"><label
                                                             for="username"><strong>Username</strong></label><input
                                                             class="form-control" type="text"
                                                             value="<?= $user['username'] ?>" name="username"></div>
                                                 </div>
-                                                <div class="col">
+                                                <div class="col-md-6">
                                                     <div class="form-group"><label for="email"><strong>Email
                                                                 Address</strong></label><input class="form-control"
                                                             type="text" value="<?= $user['email'] ?>" name="email">
@@ -36,13 +36,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-row">
-                                                <div class="col">
+                                                <div class="col-md-6">
                                                     <div class="form-group"><label for="first_name"><strong>First
                                                                 Name</strong></label><input class="form-control"
                                                             type="text" value="<?= $user['first_name'] ?>"
                                                             name="first_name"></div>
                                                 </div>
-                                                <div class="col">
+                                                <div class="col-md-6">
                                                     <div class="form-group"><label for="last_name"><strong>Last
                                                                 Name</strong></label><input class="form-control"
                                                             type="text" value="<?= $user['last_name'] ?>"
@@ -50,13 +50,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-row">
-                                                <div class="col-6">
+                                                <div class="col-md-6">
                                                     <div class="form-group"><label for="first_name"><strong>No
                                                                 Telpon</strong></label><input class="form-control"
                                                             type="text" value="<?= $user['no_telp'] ?>" name="no_telp">
                                                     </div>
                                                 </div>
-                                                <div class="col-6">
+                                                <div class="col-md-6">
                                                     <div class="form-group"><label
                                                             for="first_name"><strong>Status&nbsp;</strong><strong
                                                                 class="text-danger">(Uneditable)</strong></label><input

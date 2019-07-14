@@ -1,6 +1,6 @@
             <div class="container-fluid" style="margin-top:30px">
                 <div class="card shadow" style="max-width:850px;">
-                    <div class="card-header py-3 d-flex justify-content-between">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
                         <p class="text-primary m-0 font-weight-bold">Detail User</p>
                         <a class="btn btn-danger btn-sm d-none d-sm-inline-block btn-icon-split" role="button"
                             href="<?= base_url() ?>admin/user" style="margin-bottom:1px;">
