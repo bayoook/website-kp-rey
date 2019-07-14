@@ -100,7 +100,6 @@ class Admin extends CI_Controller
 
 	public function upload_file()
 	{
-		$this->mdu->delete_all();
 		$this->load->library('excel_reader');
 		// upload file xls
 		$target = basename($_FILES['uploadfile']['name']);
@@ -112,7 +111,13 @@ class Admin extends CI_Controller
 		$data = new Excel_reader($_FILES['uploadfile']['name'], false);
 		$dataO = new Excel_reader();
 		//$data->setOutputEncoding('CPa25a');
-		$dataO->read($_FILES['uploadfile']['name']);
+		// print_r($dataO);
+		$hasil = $dataO->read($_FILES['uploadfile']['name']);
+		if ($hasil == 1076) {
+			$this->session->set_flashdata('msg_f', 'Gagal upload file, silahkan pilih file .xls');
+			redirect('admin/upload');
+		}
+		$this->mdu->delete_all('tb_upload');
 		ini_set('memory_limit', '-1');
 		$data = $dataO->sheets[0]['cells'];
 		//print_r($data);
@@ -339,9 +344,7 @@ class Admin extends CI_Controller
 	public function test($page = null)
 	{
 		$this->load->view('admin/header', $this->data);
-		var_dump($this->data);
-		echo "<br>";
-		print_r($this->data);
+		$this->mdu->backup('upload');
 		// $this->load->view('admin/test', $this->data);
 		$this->load->view('admin/footer');
 	}

@@ -99,9 +99,9 @@ class Model_upload extends CI_Model
 		return $this->db->get()->result_array()[0][$type];
 	}
 
-	public function delete_all()
+	public function delete_all($table)
 	{
-		$this->db->truncate($this->table); 
+		$this->db->truncate($table);
 	}
 
 	public function save($data)
@@ -109,7 +109,18 @@ class Model_upload extends CI_Model
 		$this->db->insert($this->table, $data);
 	}
 
-	function olah_data($data) {
-		
+	function backup($table_from, $table_to)
+	{
+		$data = $this->read_all($table_from);
+		$this->db->truncate($table_to);
+		foreach ($data as $row) {
+			$this->db->insert($table_to, $row);
+			$this->db->from($table_from);
+		}
+	}
+	function read_all($table)
+	{
+		$query = $this->db->get($table);
+		return $query->result_array();
 	}
 }
