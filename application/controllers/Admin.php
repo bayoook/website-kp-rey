@@ -335,7 +335,7 @@ class Admin extends CI_Controller
 	{
 		$hasil = $this->mus->delete_image($id);
 		if ($hasil == 0)
-			$this->session->set_flashdata("msg_s", "Gagal hapus gambar");
+			$this->session->set_flashdata("msg_f", "Gagal hapus gambar");
 		else
 			$this->session->set_flashdata("msg_s", "Berhasil hapus gambar");
 		// redirect('admin/ubah/edit/');
