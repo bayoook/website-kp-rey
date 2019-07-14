@@ -19,11 +19,10 @@
     
 </head>
 
-<body id="page-top">
+<body id="page-top" class="">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
-            style="background-image: url('none');">
-            <div class="container-fluid d-flex flex-column p-0">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0 sticky-top">
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
                     <div class="sidebar-brand-text mx-3"><span>Telkom</span></div>
@@ -35,6 +34,10 @@
                             href="<?= base_url() ?>admin/dashboard"><i
                                 class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item" role="presentation"><a
+                            class="nav-link <?php if ($title == 'Upload') echo "active"; ?>"
+                            href="<?= base_url() ?>admin/upload"><i class="fas fa-file-upload"></i><span>File
+                                Upload</span></a></li>
+                    <li class="nav-item" role="presentation"><a
                             class="nav-link <?php if ($title == 'Profile') echo "active disabled"; ?>"
                             href="<?= base_url() ?>admin/profile"><i class="fas fa-user"></i><span>Profile</span></a>
                     </li>
@@ -45,10 +48,6 @@
                     <li class="nav-item" role="presentation"><a class="nav-link"
                             href="<?= base_url() ?>forgot-password.html"><i class="fas fa-key"></i><span>Forgotten
                                 Password</span></a></li>
-                    <li class="nav-item" role="presentation"><a
-                            class="nav-link <?php if ($title == 'Upload') echo "active"; ?>"
-                            href="<?= base_url() ?>admin/upload"><i class="fas fa-file-upload"></i><span>File
-                                Upload</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>

@@ -8,7 +8,7 @@
     <div class="row" style="padding: 10px;">
         <div class="col d-xl-flex align-items-xl-center">
             <h4 style="margin: 0px;">Pilih Witel :  </h4>
-            <div class="dropdown">
+            <div class="dropdown no-arrow">
                 <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?= $nama ?></button>
                 <div class="dropdown-menu shadow dropdown-menu-left animated--fade-in" role="menu" style="width:250px">
                     <p class="text-center dropdown-header">Witel</p>
@@ -118,29 +118,31 @@
             </div>
         </div>
     </div>
-    <div class="row text-right">
-        <div class="col">
-            <a class="btn btn-primary btn-sm d-none d-sm-inline-block btn-icon-split" role="button" id="tampil" style="margin-bottom:1px;">
-                <span class="text-white-50 icon">
-                    <i class="fas fa-table"></i>
-                </span>
-                <span class="text-white text" id="butSpan">Hide Table</span>
-            </a>
+    <div class="row text-left">
+        <div class="bottomView">
+            <div class="col">
+                <a class="btn btn-primary btn-sm btn-icon-split" role="button" id="tampil" style="margin-bottom:1px;">
+                    <span class="text-white-50 icon">
+                        <i class="fas fa-table"></i>
+                    </span>
+                    <span class="text-white text" id="butSpan">Show Table</span>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="row" id="table">
+    <div class="row" id="table" style="display:none">
         <div class="col-12">
             <div class="card shadow mb-4" style="margin-top:20px">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Full Table</h6>
                 </div>
                 <div class="card-body">
-                    
+
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                    <table class="table table-bordered dataTable table-sm" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                         <thead class="text-center">
                                             <tr>
                                                 <th style="vertical-align:middle;" rowspan="2">
@@ -166,7 +168,7 @@
                                         <tbody class="text-center">
                                             <?php foreach ($kota as $row) {
                                                 if ($row['Nama'] == 'SEMUA') continue; ?>
-                                                <tr class ="<?php if($row['Nama'] == $nama) echo 'table-primary'?> clickable-row" data-href="url:<?= base_url('admin/dashboard/').$row['Nick']; ?>">
+                                                <tr class="<?php if ($row['Nama'] == $nama) echo 'table-primary' ?> clickable-row" data-href="url:<?= base_url('admin/dashboard/') . $row['Nick']; ?>">
                                                     <td class="text-left"><?php echo $row['Nama'] ?></td>
                                                     <td><?php echo $row['DBS'] + $row['DES'] + $row['DGS'] ?></td>
                                                     <td><?php echo $row['DBS'] ?></td>
@@ -197,9 +199,9 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                            <div class="row">
+                            <div class="row" id="aaa">
                                 <div class="col-sm-12">
-                                    <table class="table table-bordered dataTable" id="" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                    <table class="table table-bordered dataTable table-sm" id="" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                         <thead class="text-center">
                                             <tr>
                                                 <th>No</th>
