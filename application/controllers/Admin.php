@@ -22,9 +22,10 @@ class Admin extends CI_Controller
 			$this->session->set_flashdata("msg_f", "Maaf anda harus login");
 			redirect("account/login");
 		}
-		$this->data['user'] = $this->session->userdata()['userdata']['0'];
+		// $this->data['user'] = $this->session->userdata()['userdata']['0'];
+		$this->data['user'] = $this->mus->read_user($this->session->userdata('userdata')['id']);
 		// $this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
-		if ($this->data['user']['status_name'] != 'Admin') { }
+		// if ($this->data['user']['status_name'] != 'Admin') { }
 		$this->data['IMPORTANT'] = $this->mus->IMPORTANT();
 
 		// print_r($_SESSION);
@@ -63,7 +64,7 @@ class Admin extends CI_Controller
 		$this->data['kota']['tasikmalaya'] = $this->mdu->count_all('tasikmalaya', 'tasikmalaya');
 		$this->data['kota']['sukabumi'] = $this->mdu->count_all('sukabumi', 'sukabumi');
 		$this->data['kota']['karawang'] = $this->mdu->count_all('karawang', 'karawang');
-		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
+		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		foreach ($this->data['kota'] as $rows) {
 			if ($sel == $rows['Nick']) {
 				$this->data['nama'] = $rows['Nama'];
@@ -81,7 +82,7 @@ class Admin extends CI_Controller
 	public function upload()
 	{
 		$this->data['title'] = "Upload";
-		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
+		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/upload', $this->data);
 		$this->load->view('admin/footer');
@@ -89,7 +90,7 @@ class Admin extends CI_Controller
 	public function user()
 	{
 		$this->data['user_all'] = $this->mus->read_all();
-		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
+		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		// $this->data['status'] = $this->mds->read();
 		// print_r($this->data['user']);
 		$this->data['title'] = "User";
@@ -202,7 +203,7 @@ class Admin extends CI_Controller
 	}
 	public function ubah($type, $id = null, $photo = null)
 	{
-		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
+		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		if ($photo != null) {
 			$this->data['photo'] = $photo;
 			$this->session->set_flashdata("photo_se", $photo);
@@ -319,7 +320,7 @@ class Admin extends CI_Controller
 			redirect('admin/profile');
 		}
 		$this->data['title'] = 'Profile';
-		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
+		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		// $this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/profile', $this->data);
