@@ -35,7 +35,7 @@
                                             <?= $rows['username'] ?></td>
                                         <td><?= $rows['first_name'] . ' ' . $rows['last_name'] ?></td>
                                         <td><?= $rows['email'] ?></td>
-                                        <td><?php foreach ($status as $row) if ($rows['status'] == $row['id_status']) echo $row['nama'] ?>
+                                        <td><?= $rows['nama_status'] ?>
                                         </td>
                                         <td><?= $rows['alamat'] ?></td>
                                         <td><?= $rows['no_telp'] ?></td>

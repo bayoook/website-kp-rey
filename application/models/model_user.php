@@ -38,14 +38,6 @@ class Model_user extends CI_Model
 		return $n_data;
 	}
 
-	public function read_table($offset, $number)
-	{
-		$this->db->select('*');
-		$this->db->limit($number, $offset);
-		$this->db->from($this->table);
-		$query = $this->db->get();
-		return $query->result_array();
-	}
 	public function count_table()
 	{
 		$this->db->select('*');
@@ -57,6 +49,7 @@ class Model_user extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from($this->table);
+		$this->db->join('tb_status', 'tb_user.status = tb_status.id_status');
 		$query = $this->db->get();
 		return $query->result_array();
 	}
@@ -66,6 +59,7 @@ class Model_user extends CI_Model
 		$this->db->select('*');
 		$this->db->from($this->table);
 		$this->db->where('id', $id);
+		$this->db->join('tb_status', "tb_user.status = tb_status.id_status");
 		$this->db->limit(1);
 		$query = $this->db->get();
 		return $query->result_array()[0];
