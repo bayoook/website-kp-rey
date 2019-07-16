@@ -23,7 +23,7 @@ class Admin extends CI_Controller
 			redirect("account/login");
 		}
 		$this->data['user'] = $this->session->userdata()['userdata']['0'];
-		$this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
+		// $this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
 		if ($this->data['user']['status_name'] != 'Admin') { }
 		$this->data['IMPORTANT'] = $this->mus->IMPORTANT();
 
@@ -90,7 +90,7 @@ class Admin extends CI_Controller
 	{
 		$this->data['user_all'] = $this->mus->read_all();
 		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
-		$this->data['status'] = $this->mds->read();
+		// $this->data['status'] = $this->mds->read();
 		// print_r($this->data['user']);
 		$this->data['title'] = "User";
 		$this->load->view('admin/header', $this->data);
@@ -114,7 +114,7 @@ class Admin extends CI_Controller
 		// print_r($dataO);
 		$hasil = $dataO->read($_FILES['uploadfile']['name']);
 		if ($hasil == 1076) {
-			$this->session->set_flashdata('msg_f', 'Gagal upload file, silahkan pilih file .xls');
+			$this->session->set_flashdata('msg_f', 'Gagal upload file karena tidak terbaca atau extensi tidak sesuai');
 			redirect('admin/upload');
 		}
 		$this->mdu->delete_all('tb_upload');
@@ -320,7 +320,7 @@ class Admin extends CI_Controller
 		}
 		$this->data['title'] = 'Profile';
 		$this->data['user'] = $this->mus->read_user($this->data['user']['id']);
-		$this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
+		// $this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/profile', $this->data);
 		$this->load->view('admin/footer');

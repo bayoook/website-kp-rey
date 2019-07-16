@@ -23,7 +23,7 @@ class Model_status extends CI_Model
 		$this->db->where('id_status', $id);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		return $query->result_array()[0]['nama'];
+		return $query->result_array()[0]['nama_status'];
 	}
 	public function read_id($id)
 	{
