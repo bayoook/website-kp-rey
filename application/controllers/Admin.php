@@ -72,6 +72,8 @@ class Admin extends CI_Controller
 	public function upload()
 	{
 		$this->data['title'] = "Upload";
+		$this->data['table'] = $this->mdu->view_all_table();
+		// print_r($this->data['table']);
 		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/upload', $this->data);

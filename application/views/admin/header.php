@@ -35,7 +35,7 @@
                         </a>
                         <div id="collapseDashboard" class="collapse <?php if ($title == 'Dashboard Datin' or $title == 'Dashboard Pots') echo "show"; ?>" aria-labelledby="headingCollapse" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Testing</h6>
+                                <!-- <h6 class="collapse-header">Testing</h6> -->
                                 <a class="collapse-item <?php if ($title == 'Dashboard Datin') echo "active"; ?>" href="<?= base_url() ?>admin/dashboard/datin">Datin</a>
                                 <a class="collapse-item <?php if ($title == 'Dashboard Pots') echo "active"; ?>" href="<?= base_url() ?>admin/dashboard/pots">Pots</a>
                             </div>
