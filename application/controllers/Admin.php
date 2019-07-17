@@ -49,32 +49,22 @@ class Admin extends CI_Controller
 	{
 		redirect('admin/dashboard');
 	}
-	public function dashboard($sel = null)
+	public function dashboard($type = 'Datin' ,$regional = 1)
 	{
-		if ($sel == null)
-			$sel = 'bandung';
-		if ($sel == 'success')
-			$sel = 'bandung';
-		$this->data['sel'] = $sel;
-		$this->data['title'] = "Dashboard";
-		$this->data['kota']['all'] = $this->mdu->count_all_a();
-		$this->data['kota']['bandung'] = $this->mdu->count_all('(bandung)', 'bandung');
-		$this->data['kota']['bandungbrt'] = $this->mdu->count_all('Bandung Barat', 'bandungbrt');
-		$this->data['kota']['cirebon'] = $this->mdu->count_all('cirebon', 'cirebon');
-		$this->data['kota']['tasikmalaya'] = $this->mdu->count_all('tasikmalaya', 'tasikmalaya');
-		$this->data['kota']['sukabumi'] = $this->mdu->count_all('sukabumi', 'sukabumi');
-		$this->data['kota']['karawang'] = $this->mdu->count_all('karawang', 'karawang');
+		$this->data['title'] = "Dashboard Datin";
+		$this->data['all'] = $this->mdu->get_all_data();
+		$this->data['regional'] = $regional;
 		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
-		foreach ($this->data['kota'] as $rows) {
-			if ($sel == $rows['Nick']) {
-				$this->data['nama'] = $rows['Nama'];
-				$this->data['dbs'] = $rows['AVG_DBS'];
-				$this->data['des'] = $rows['AVG_DES'];
-				$this->data['dgs'] = $rows['AVG_DGS'];
-				$this->data['comply'] = $rows['COMPLY'];
-				$this->data['nComply'] = $rows['NOT_COMPLY'];
-			}
-		}
+		// foreach ($this->data['kota'] as $rows) {
+		// 	if ($sel == $rows['Nick']) {
+		// 		$this->data['nama'] = $rows['Nama'];
+		// 		$this->data['dbs'] = $rows['AVG_DBS'];
+		// 		$this->data['des'] = $rows['AVG_DES'];
+		// 		$this->data['dgs'] = $rows['AVG_DGS'];
+		// 		$this->data['comply'] = $rows['COMPLY'];
+		// 		$this->data['nComply'] = $rows['NOT_COMPLY'];
+		// 	}
+		// }
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/dashboard', $this->data);
 		$this->load->view('admin/footer');
@@ -342,12 +332,30 @@ class Admin extends CI_Controller
 		// redirect('admin/ubah/edit/');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
-	public function test($page = null)
+	public function test($regional = 1, $witel = 1)
 	{
+		$this->data['all'] = $this->mdu->get_all_data();
+		$this->data['regional'] = $regional;
+		$this->data['witel'] = $witel;
+		// $this->data['title'] = "Dashboard Datin";
+		// $this->data['kota']['all'] = $this->mdu->count_all_a();
+		// $this->data['kota']['bandung'] = $this->mdu->count_all('(bandung)', 'bandung');
+		// $this->data['kota']['bandungbrt'] = $this->mdu->count_all('Bandung Barat', 'bandungbrt');
+		// $this->data['kota']['cirebon'] = $this->mdu->count_all('cirebon', 'cirebon');
+		// $this->data['kota']['tasikmalaya'] = $this->mdu->count_all('tasikmalaya', 'tasikmalaya');
+		// $this->data['kota']['sukabumi'] = $this->mdu->count_all('sukabumi', 'sukabumi');
+		// $this->data['kota']['karawang'] = $this->mdu->count_all('karawang', 'karawang');
+		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		$this->load->view('admin/header', $this->data);
-		$this->mdu->backup('upload');
-		// $this->load->view('admin/test', $this->data);
+		$this->load->view('admin/dashboard-2', $this->data);
 		$this->load->view('admin/footer');
+		// print_r($this->data['all']);
+
+	}
+	public function test_2()
+	{
+		$this->data['all'] = $this->mdu->get_all_data();
+		print_r($this->data['all']);
 	}
 
 	function pindah_gambar($files, $id)

@@ -35,7 +35,6 @@ class Account extends CI_Controller
     }
     public function login_auth()
     {
-
         $username = $this->input->post('username');
         $password = md5($this->input->post('password'));
 
@@ -50,7 +49,7 @@ class Account extends CI_Controller
                 print_r($user);
                 $this->session->set_userdata('userdata', $user);
                 $this->session->set_userdata('login', '1');
-                //  redirect('admin');
+                 redirect('admin');
             } else {
                 $this->session->set_flashdata("msg_f", "Username atau password anda tidak ditemukan");
                 redirect('account/login');

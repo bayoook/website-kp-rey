@@ -12,6 +12,87 @@ class Model_upload extends CI_Model
 		parent::__construct();
 		$this->load->database();
 	}
+	public function get_all_data()
+	{
+		$data = array();
+		$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
+		$this->db->select('SUM(CASE WHEN cust_segment="DES" THEN 1 ELSE 0 END) as des');
+		$this->db->select('SUM(CASE WHEN cust_segment="DGS" THEN 1 ELSE 0 END) as dgs');
+		$this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
+		$this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
+		$this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
+		$this->db->select('AVG(ttr_cust) as ttr_avg');
+		$this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
+		$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
+		$data = $this->db->get($this->table)->result_array()[0];
+		$this->db->select('regional');
+		$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
+		$this->db->select('SUM(CASE WHEN cust_segment="DES" THEN 1 ELSE 0 END) as des');
+		$this->db->select('SUM(CASE WHEN cust_segment="DGS" THEN 1 ELSE 0 END) as dgs');
+		$this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
+		$this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
+		$this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
+		$this->db->select('AVG(ttr_cust) as ttr_avg');
+		$this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
+		$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
+		$this->db->group_by('regional');
+		$data['regional_list'] = $this->db->get($this->table)->result_array();
+		foreach ($data['regional_list'] as $keys => $rows) {
+			$this->db->select('regional, witel');
+			$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
+			$this->db->select('SUM(CASE WHEN cust_segment="DES" THEN 1 ELSE 0 END) as des');
+			$this->db->select('SUM(CASE WHEN cust_segment="DGS" THEN 1 ELSE 0 END) as dgs');
+			$this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
+			$this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
+			$this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
+			$this->db->select('AVG(ttr_cust) as ttr_avg');
+			$this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
+			$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
+			$this->db->group_by('regional, witel');
+			$this->db->where('regional', $rows['regional']);
+			$data['regional_list'][$keys]['witel_list'] = array();
+			$data['regional_list'][$keys]['witel_list'] += $this->db->get($this->table)->result_array();
+		}
+		// $this->db->select('regional, witel');
+		// $this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
+		// $this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
+		// $this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
+		// $this->db->select('SUM(CASE WHEN cust_segment="DES" THEN 1 ELSE 0 END) as des');
+		// $this->db->select('SUM(CASE WHEN cust_segment="DGS" THEN 1 ELSE 0 END) as dgs');
+		// $this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
+		// $this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
+		// $this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
+		// $this->db->group_by('regional, witel');
+		// $data['witel_list'] = $this->db->get($this->table)->result_array();
+		// print_r ($this->db->last_query());
+		// $this->db->select('regional, witel, cust_segment');
+		// $this->db->select('COUNT(cust_segment) as count_cust_segment');
+		// $this->db->select('AVG(ttr_cust) as avg_ttr');
+		// $this->db->group_by('regional, witel, cust_segment');
+		// // print_r($this->db->get($this->table));
+		// $data['data'] = $this->db->get($this->table)->result_array();
+		// SELECT `regional`, `witel`, `cust_segment`, COUNT(`cust_segment`), AVG(`ttr_cust`) FROM `tb_upload` GROUP BY `regional`, `witel`, `cust_segment`
+		// print_r ($this->db->last_query());
+		// print_r ($data);
+		return $data;
+		// $new_data = array();
+		// foreach($data as $key => $regional) {
+		// 	$reg = $regional['regional'];
+		// 	$new_data[$key] = array();
+		// 	$new_data[$key]['regional'] = $reg;
+		// 	$this->db->select('witel');
+		// 	$this->db->group_by('witel');
+		// 	$this->db->where('regional', $reg);
+		// 	$new_data[$key] += $this->db->get($this->table)->result_array();
+		// }
+		// foreach($new_data as $key => $regional){
+		// 	foreach($regional as $key2 => $witel){
+		// 		if($key2 >= 1);
+		// 			print_r ($witel);
+		// 	}
+		// }
+		// return $new_data;
+	}
 	public function count_all_a()
 	{
 		$data['Nama'] = "SEMUA";
