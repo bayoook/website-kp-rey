@@ -49,7 +49,7 @@ class Admin extends CI_Controller
 	{
 		redirect('admin/dashboard');
 	}
-	public function dashboard($type = 'Datin' ,$regional = 'all')
+	public function dashboard($type = 'Datin', $regional = 'all')
 	{
 		$this->data['title'] = "Dashboard Datin";
 		$this->data['all'] = $this->mdu->get_all_data();
@@ -159,19 +159,6 @@ class Admin extends CI_Controller
 			if (isset($data[$i][$gamas_col])) $gamas = $data[$i][$gamas_col];
 			else $gamas = "";
 
-
-			$cust_name = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $cust_name);
-			$cust_segment = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $cust_segment);
-			$serv_id = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $serv_id);
-			$serv_no = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $serv_no);
-			$top_prio = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $top_prio);
-			$ttr_cust = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $ttr_cust);
-			$compliance = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $compliance);
-			$witel = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $witel);
-			$regional = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $regional);
-			$exclude = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $exclude);
-			$gamas = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $gamas);
-
 			$data_save = array(
 				'cust_name' => $cust_name,
 				'cust_segment' => $cust_segment,
@@ -185,6 +172,7 @@ class Admin extends CI_Controller
 				'exclude' => $exclude,
 				'gamas' => $gamas
 			);
+			$data_save = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $data_save);
 			$berhasil++;
 			$this->mdu->save($data_save);
 		}
