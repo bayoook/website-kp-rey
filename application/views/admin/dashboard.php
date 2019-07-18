@@ -1,7 +1,7 @@
 <!-- <?php print_r($user) ?> -->
-<!-- <?php print_r($user) ?> -->
 <div class="container-fluid">
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <!-- <?php print_r($user) ?> -->
         <h3 class="text-dark mb-0">Dashboard</h3>
         <?php if ($berhasil) { ?>
             <h6 class="text-success mb-0">Success import <?php echo $berhasil ?> data</h6>
@@ -11,7 +11,8 @@
         <div class="col d-xl-flex align-items-xl-center">
             <h4 style="margin: 0px;">Pilih Regional :  </h4>
             <div class="dropdown no-arrow">
-                <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?php if ($regional == 'all') echo "Semua"; else foreach ($all['regional_list'] as $keys => $row) if ($keys + 1 == $regional) echo "Regional ".$row['regional'] ?></button>
+                <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?php if ($regional == 'all') echo "Semua";
+                                                                                                                                else foreach ($all['regional_list'] as $keys => $row) if ($keys + 1 == $regional) echo "Regional " . $row['regional'] ?></button>
                 <div class="dropdown-menu shadow dropdown-menu-left animated--fade-in" role="menu">
                     <p class="text-center dropdown-header">Witel</p>
                     <a class="text-center dropdown-item <?php if ($regional == 'all') echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/datin/all">Semua</a>
@@ -24,52 +25,96 @@
         </div>
     </div>
     <div class="row" style="margin-top:20px">
-        <div class="col-lg-4 col-xl-4">
+        <div class="col-lg-8 col-xl-8">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Average TTR Customer Segment</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas data-bs-chart='{"type":"bar",
+                        <canvas data-bs-chart='{"type":"horizontalBar",
                             "data":{"labels":[
-                                <?php foreach ($all['regional_list'] as $keys => $rows) {
-                                    if ($keys == 0)
+                                <?php if ($regional == 'all') {
+                                    foreach ($all['regional_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo 'Regional ' . $rows['regional'];
                                         echo '"';
-                                    else
-                                        echo ',"';
-                                    echo "Reg " . $rows['regional'];
-                                    echo '"';
+                                    }
+                                } else {
+                                    foreach ($all['regional_list'][$regional - 1]['witel_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo $rows['witel'];
+                                        echo '"';
+                                    }
                                 } ?>
                                 ],
                             "datasets":[{"label":"DES","backgroundColor":"#4e73df","borderColor":"white","data":[
-                                <?php foreach ($all['regional_list'] as $keys => $rows) {
-                                    if ($keys == 0)
+                                <?php if ($regional == 'all') {
+                                    foreach ($all['regional_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo number_format($rows['ttr_dbs'], 2);
                                         echo '"';
-                                    else
-                                        echo ',"';
-                                    echo number_format($rows['ttr_dbs'], 2);
-                                    echo '"';
+                                    }
+                                } else {
+                                    foreach ($all['regional_list'][$regional - 1]['witel_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo number_format($rows['ttr_dbs'], 2);
+                                        echo '"';
+                                    }
                                 } ?>
                                 ]},
                             {"label":"DBS","backgroundColor":"#df4e4e","borderColor":"white","data":[
-                                <?php foreach ($all['regional_list'] as $keys => $rows) {
-                                    if ($keys == 0)
+                                <?php if ($regional == 'all') {
+                                    foreach ($all['regional_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo number_format($rows['ttr_des'], 2);
                                         echo '"';
-                                    else
-                                        echo ',"';
-                                    echo number_format($rows['ttr_des'], 2);
-                                    echo '"';
+                                    }
+                                } else {
+                                    foreach ($all['regional_list'][$regional - 1]['witel_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo number_format($rows['ttr_des'], 2);
+                                        echo '"';
+                                    }
                                 } ?>
                                 ]},
-                            {"label":"DBS","backgroundColor":"#62df4e","borderColor":"white","data":[
-                                <?php foreach ($all['regional_list'] as $keys => $rows) {
-                                    if ($keys == 0)
+                            {"label":"DGS","backgroundColor":"#62df4e","borderColor":"white","data":[
+                                <?php if ($regional == 'all') {
+                                    foreach ($all['regional_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo number_format($rows['ttr_dgs'], 2);
                                         echo '"';
-                                    else
-                                        echo ',"';
-                                    echo number_format($rows['ttr_dgs'], 2);
-                                    echo '"';
+                                    }
+                                } else {
+                                    foreach ($all['regional_list'][$regional - 1]['witel_list'] as $keys => $rows) {
+                                        if ($keys == 0)
+                                            echo '"';
+                                        else
+                                            echo ',"';
+                                        echo number_format($rows['ttr_dgs'], 2);
+                                        echo '"';
+                                    }
                                 } ?>
                                 ]}]},
                             "options":{"maintainAspectRatio":false,
@@ -81,7 +126,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-xl-4">
+        <!-- <div class="col-lg-4 col-xl-4">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Jumlah Customer Segment</h6>
@@ -137,13 +182,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="col-lg-4 col-xl-4">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Ranking</h6>
                 </div>
-                <div class="card-body" style="min-height:360px">
+                <div class="card-body" style="height:360px">
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                             <div class="row" id="aaa">
@@ -155,11 +200,20 @@
                                                 <th>Average TTR</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="text-center">
-                                            <?php foreach ($all['regional_list'] as $keys => $rows) { ?>
+                                        <tbody class="">
+
+                                            <?php if ($regional == 'all') {
+                                                foreach ($all['regional_list'] as $keys => $rows) { ?>
+                                                    <tr>
+                                                        <td>Regional <?= $rows['regional'] ?></td>
+                                                        <td><?php echo number_format($rows['ttr_avg'], 2) ?></td>
+                                                    </tr>
+                                                <?php }
+                                            } else
+                                                foreach ($all['regional_list'][$regional-1]['witel_list'] as $keys => $rows) { ?>
                                                 <tr>
-                                                    <td>Regional <?= $rows['regional'] ?></td>
-                                                    <td><?php echo number_format($rows['ttr_avg'], 2) ?></td>
+                                                    <td><?= $rows['witel'] ?></td>
+                                                    <td class="text-center"><?php echo number_format($rows['ttr_avg'], 2) ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

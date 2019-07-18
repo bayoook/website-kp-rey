@@ -49,7 +49,7 @@ class Admin extends CI_Controller
 	{
 		redirect('admin/dashboard');
 	}
-	public function dashboard($type = 'Datin' ,$regional = 1)
+	public function dashboard($type = 'Datin' ,$regional = 'all')
 	{
 		$this->data['title'] = "Dashboard Datin";
 		$this->data['all'] = $this->mdu->get_all_data();
