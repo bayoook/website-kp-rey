@@ -204,7 +204,7 @@
 
                                             <?php if ($regional == 'all') {
                                                 foreach ($all['regional_list'] as $keys => $rows) { ?>
-                                                    <tr>
+                                                    <tr class="text-center">
                                                         <td>Regional <?= $rows['regional'] ?></td>
                                                         <td><?php echo number_format($rows['ttr_avg'], 2) ?></td>
                                                     </tr>
@@ -233,12 +233,12 @@
                     <span class="text-white-50 icon">
                         <i class="fas fa-table"></i>
                     </span>
-                    <span class="text-white text" id="butSpan">Show Table</span>
+                    <span class="text-white text" id="button_show_hide">Show Table</span>
                 </a>
             </div>
         </div>
     </div>
-    <div class="row" id="table" style="display:none">
+    <div class="row" id="table_show" style="display:none">
         <div class="col-12">
             <div class="card shadow mb-4" style="margin-top:20px">
                 <div class="card-header py-3">
@@ -249,13 +249,13 @@
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table class="table table-bordered dataTable table-sm" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                    <table class="table table-bordered dataTable table-sm" id="full_table" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                         <thead class="text-center">
                                             <tr>
                                                 <th style="vertical-align:middle;" rowspan="2">
                                                     Witel</th>
                                                 <th style="vertical-align: middle;" rowspan="2">
-                                                    Total</th>
+                                                    Total Tiket</th>
                                                 <th colspan="3">Customer Segment</th>
                                                 <th colspan="4">Average TTR</th>
                                                 <th style="vertical-align: middle;" rowspan="2">SLG</th>
@@ -316,6 +316,71 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-8">
+            <div class="card shadow mb-4" style="margin-top:20px">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Top Priority Table</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered dataTable table-sm" id="top_prio_table" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th style="vertical-align:middle;" rowspan="2">
+                                                    Witel</th>
+                                                <th colspan="8">DATIN</th>
+                                            </tr>
+                                            <tr>
+                                                <th>TOP20 DGS</th>
+                                                <th>TOP20 DES</th>
+                                                <th>TOP100 DBS</th>
+                                                <th>TOP100 DGS</th>
+                                                <th>TOP200 DES</th>
+                                                <th>OTHERS DGS</th>
+                                                <th>OTHERS DES</th>
+                                                <th>OTHERS DBS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            <?php if ($regional == 'all')
+                                                foreach ($all['regional_list'] as $row) { ?>
+                                                <tr class="<?php if ($row['regional'] == $nama) echo 'table-primary' ?>">
+                                                    <td class="text-left">Regional <?php echo $row['regional'] ?></td>
+                                                    <td><?php echo $row['t20dgs'] ?></td>
+                                                    <td><?php echo $row['t20des'] ?></td>
+                                                    <td><?php echo $row['t100dbs'] ?></td>
+                                                    <td><?php echo $row['t100dgs'] ?></td>
+                                                    <td><?php echo $row['t200des'] ?></td>
+                                                    <td><?php echo $row['odgs'] ?></td>
+                                                    <td><?php echo $row['odes'] ?></td>
+                                                    <td><?php echo $row['odbs'] ?></td>
+                                                </tr>
+                                            <?php } else
+                                            foreach ($all['regional_list'][$regional - 1]['witel_list'] as $row) { ?>
+                                                <tr class="<?php if ($row['witel'] == $nama) echo 'table-primary' ?>">
+                                                    <td class="text-left"><?php echo $row['witel'] ?></td>
+                                                    <td><?php echo $row['t20dgs'] ?></td>
+                                                    <td><?php echo $row['t20des'] ?></td>
+                                                    <td><?php echo $row['t100dbs'] ?></td>
+                                                    <td><?php echo $row['t100dgs'] ?></td>
+                                                    <td><?php echo $row['t200des'] ?></td>
+                                                    <td><?php echo $row['odgs'] ?></td>
+                                                    <td><?php echo $row['odes'] ?></td>
+                                                    <td><?php echo $row['odbs'] ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-xl-4">
             <div class="card shadow mb-4" id="table" style="margin-top:20px">
                 <div class="card-header py-3">
@@ -324,7 +389,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                            <div class="row" id="aaa">
+                            <div class="row" id="">
                                 <div class="col-sm-12">
                                     <table class="table table-bordered dataTable table-sm" id="" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                         <thead class="text-center">
