@@ -46,7 +46,7 @@
                                     }
                                 } ?>
                                 ],
-                            "datasets":[{"label":"DES","backgroundColor":"#4e73df","borderColor":"white","data":[
+                            "datasets":[{"label":"DBS","backgroundColor":"#4e73df","borderColor":"white","data":[
                                 <?php if ($regional == 'all') {
                                     foreach ($all['regional_list'] as $keys => $rows) {
                                         if ($keys == 0)
@@ -67,7 +67,7 @@
                                     }
                                 } ?>
                                 ]},
-                            {"label":"DBS","backgroundColor":"#df4e4e","borderColor":"white","data":[
+                            {"label":"DES","backgroundColor":"#df4e4e","borderColor":"white","data":[
                                 <?php if ($regional == 'all') {
                                     foreach ($all['regional_list'] as $keys => $rows) {
                                         if ($keys == 0)

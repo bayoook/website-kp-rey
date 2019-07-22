@@ -2,7 +2,7 @@
                         <div class="col-xl-4" style="max-width: 435px;">
                             <div class="row">
                                 <div class="col" style="margin-bottom: 21px;">
-                                    <form method="post" enctype="multipart/form-data" action="<?= base_url() ?>admin/upload_file/datin">
+                                    <form method="post" class="form_upload" enctype="multipart/form-data" action="<?= base_url() ?>admin/upload_file/datin">
                                         <div class="card shadow">
                                             <div class="card-header text-center">
                                                 <h1><i class="fas fa-file-excel text-success"></i></h1>
@@ -26,7 +26,7 @@
                             </div>
                             <div class="row">
                                 <div class="col" style="margin-bottom: 21px;">
-                                    <form method="post" enctype="multipart/form-data" action="<?= base_url() ?>admin/upload_file/pots">
+                                    <form method="post" class="form_upload" enctype="multipart/form-data" action="<?= base_url() ?>admin/upload_file/pots">
                                         <div class="card shadow">
                                             <div class="card-header text-center">
                                                 <h1><i class="fas fa-file-excel text-primary"></i></h1>
@@ -79,10 +79,10 @@
                                                         <td><?= $tanggal; ?></td>
                                                         <td><?= $jam; ?></td>
                                                         <td class="text-center">
-                                                            <a href="<?= base_url() ?>admin/hide_table/<?= $rows['id'] ?>/<?php if($rows['status'] == 'hide') echo 'show' ?>" class="btn btn-info btn-sm">
-                                                                <i class="far fa-eye<?php if($rows['status'] == 'hide') echo '-slash' ?>"></i>
+                                                            <a href="<?= base_url() ?>admin/hide_table/<?= $rows['id'] ?>/<?php if ($rows['status'] == 'hide') echo 'show' ?>" class="btn btn-info btn-sm">
+                                                                <i class="far fa-eye<?php if ($rows['status'] == 'hide') echo '-slash' ?>"></i>
                                                             </a>
-                                                            <a href="<?= base_url() ?>admin/delete_history/<?= $rows['id'] ?>" class="btn btn-danger btn-sm">
+                                                            <a href="<?= base_url() ?>admin/delete_history/<?= $rows['id'] ?>" class="btn btn-danger btn-sm delete-button" value="<?= $rows['type'] ?> tanggal : <?= $tanggal ?>" status="data">
                                                                 <i class=" far fa-trash-alt"></i>
                                                             </a>
                                                         </td>

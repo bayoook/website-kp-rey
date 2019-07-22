@@ -45,18 +45,34 @@ $(document).ready(function () {
             type: 'error',
         });
     }
+    $(".form_upload").submit(function (e) {
+        console.log('asd');
+        const href = $(this).attr('action');
+        // e.preventDefault(); // stops the default action
+        Swal.fire({
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            title: 'Upload',
+            html: 'Please wait this may take a few minutes',
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            }
+        })
+    });
     $('.delete-button').on('click', function (e) {
         e.preventDefault();
         const href = $(this).attr('href');
         const user = $(this).attr('value');
+        const status = $(this).attr('status');
+        console.log('status :', status);
         Swal.fire({
             title: "Apakah anda yakin",
-            text: "akan menghapus user " + user + "?",
+            text: "akan menghapus " + status + " " + user + "?",
             type: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Hapus User'
+            confirmButtonText: 'Hapus ' + status
         }).then((result) => {
             if (result.value) {
                 document.location.href = href;

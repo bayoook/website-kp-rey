@@ -52,7 +52,7 @@ class Admin extends CI_Controller
 	}
 	public function dashboard($type = 'datin', $regional = 'all')
 	{
-		$this->data['title'] = "Dashboard ".ucwords($type) ;
+		$this->data['title'] = "Dashboard " . ucwords($type);
 		$this->data['all'] = $this->mdu->get_all_data($type);
 		$this->data['regional'] = $regional;
 		$this->data['type'] = $type;
@@ -111,17 +111,23 @@ class Admin extends CI_Controller
 		$hasil = $dataO->read($_FILES['uploadfile']['name']);
 		unlink($_FILES['uploadfile']['name']);
 		if ($hasil == 1076) {
-			$this->session->set_flashdata('msg_f', 'Gagal upload file karena file tidak terbaca atau extensi file tidak sesuai');
+			$this->session->set_flashdata('msg_f', 'File tidak terbaca atau extensi file tidak sesuai');
 			redirect('admin/upload');
 		}
 		// $this->mdu->delete_all('tb_upload');
 		ini_set('memory_limit', '-1');
 		$cells = $dataO->boundsheets;
+		$len = count($cells);
 		foreach ($cells as $keys => $rows) {
 			if (strcasecmp($rows['name'], $type) == 0) {
 				$data = $dataO->sheets[$keys]['cells'];
 				$jumlah_baris = $dataO->sheets[$keys]['numRows'];
 				$jumlah_kolom = $dataO->sheets[$keys]['numCols'];
+				break;
+			}
+			if ($keys == $len - 1 && strcasecmp($rows['name'], $type) != 0) { 
+				$this->session->set_flashdata('msg_f', 'Tidak ada data '.$type.' di dalam file');
+				redirect($_SERVER['HTTP_REFERER']);
 			}
 		}
 		// $data = $dataO->sheets[0]['cells'];
@@ -147,6 +153,7 @@ class Admin extends CI_Controller
 			if (strcasecmp($data[1][$i], "Regional") == 0) $regional_col = $i;
 			if (strcasecmp($data[1][$i], "exclude") == 0) $exclude_col = $i;
 			if (strcasecmp($data[1][$i], "GAMAS") == 0) $gamas_col = $i;
+			if (strcasecmp($data[1][$i], "Reported Date") == 0) $report_date_col = $i;
 		}
 		$id_history = array();
 		for ($i = 2; $i <= $jumlah_baris; $i++) {
@@ -174,6 +181,11 @@ class Admin extends CI_Controller
 			else $exclude = "";
 			if (isset($data[$i][$gamas_col])) $gamas = $data[$i][$gamas_col];
 			else $gamas = "";
+			if (isset($data[$i][$report_date_col])) {
+				$report_date = $data[$i][$report_date_col];
+				$report_date = strtotime($report_date);
+				$report_date = date('Y-m-d H:i:s', $report_date);
+			} else $report_date = "";
 
 			$data_save = array(
 				'cust_name' => $cust_name,
@@ -188,14 +200,15 @@ class Admin extends CI_Controller
 				'exclude' => $exclude,
 				'gamas' => $gamas,
 				'type' => $type,
-				'status' => 'show'
+				'status' => 'show',
+				'report_date' => $report_date
 			);
 			$data_save = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $data_save);
 			$berhasil++;
 			array_push($id_history, $this->mdu->save($data_save));
 		}
 		// hapus kembali file .xls yang di upload tadi
-		if($berhasil != 0)
+		if ($berhasil != 0)
 			$this->session->set_flashdata('msg_s', "Berhasil upload $berhasil data");
 		else {
 			$this->session->set_flashdata('msg_f', "Gagal upload data");
@@ -204,7 +217,7 @@ class Admin extends CI_Controller
 		// $tanggal = '07-12-2017 09:43:13';
 		// $tanggal = strtotime($tanggal);
 		// $tanggal = date('Y-m-d H:i:s',$tanggal);
-		$data_history = array (
+		$data_history = array(
 			'awal' => min($id_history),
 			'akhir' => max($id_history),
 			'tanggal' => date("Y-m-d H:i:s"),
@@ -214,7 +227,7 @@ class Admin extends CI_Controller
 		);
 		print_r($data_history);
 		$this->mdh->save($data_history);
-		redirect('admin/dashboard/'.$type);
+		redirect('admin/dashboard/' . $type);
 	}
 	public function ubah($type, $id = null, $photo = null)
 	{
@@ -412,7 +425,7 @@ class Admin extends CI_Controller
 		$this->mdh->delete_where_id($id);
 		redirect($_SERVER['HTTP_REFERER']);
 	}
-	public function hide_table($id, $type='hide')
+	public function hide_table($id, $type = 'hide')
 	{
 		$history = $this->mdh->load_by_id($id);
 		$this->mdu->hide_table(array('id >=' => $history['awal'], 'id<=' => $history['akhir']), $type);

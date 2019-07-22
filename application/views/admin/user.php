@@ -43,7 +43,7 @@
                                                 class="btn btn-info btn-sm"><i class="far fa-edit"></i></a>
                                             <a href="<?= base_url() ?>admin/delete_user/<?= $rows['id'] ?>"
                                                 class="btn btn-danger btn-sm <?php if ($rows['id'] == $user['id']) echo "disabled" ?> delete-button"
-                                                value="<?= $rows['username'] ?>"><i class=" far fa-trash-alt"></i></a>
+                                                value="<?= $rows['username'] ?>" status="user"><i class=" far fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                     <?php } ?>
