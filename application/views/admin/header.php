@@ -27,8 +27,9 @@
                 </a>
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
                     <!-- <hr class="sidebar-divider my-0"> -->
-                    <li class="nav-item"  role="presentation">
-                        <a class="nav-link <?php if ($title == 'Dashboard Datin' or $title == 'Dashboard Pots') echo "active"; else echo "collapsed" ?>" href="#" data-toggle="collapse" data-target="#collapseDashboard" aria-expanded="true" aria-controls="collapseDashboard">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link <?php if ($title == 'Dashboard Datin' or $title == 'Dashboard Pots') echo "active";
+                                            else echo "collapsed" ?>" href="#" data-toggle="collapse" data-target="#collapseDashboard" aria-expanded="true" aria-controls="collapseDashboard">
                             <i class="fas fa-fw fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
@@ -120,3 +121,6 @@
                 </nav>
                 <div class="flash-data-s" data-flashdata="<?= $_SESSION['msg_s']; ?>"></div>
                 <div class="flash-data-f" data-flashdata="<?= $_SESSION['msg_f']; ?>"></div>
+
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4"><?= $title; ?></h3>

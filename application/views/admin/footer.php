@@ -15,7 +15,7 @@
 <script src="<?= base_url() ?>assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url() ?>assets/js/theme.js"></script>
 <script src="<?= base_url() ?>assets/js/script.js"></script>
-<script src="<?= base_url() ?>assets/js/datatables.js"></script>
+<!-- <script src="<?= base_url() ?>assets/js/datatables.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
 </body>
 

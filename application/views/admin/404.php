@@ -1,3 +1,4 @@
+            </div>
             <div class="container-fluid">
                 <div class="text-center mt-5">
                     <div class="error mx-auto" data-text="404">

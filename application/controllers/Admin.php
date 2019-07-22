@@ -16,6 +16,7 @@ class Admin extends CI_Controller
 		$this->load->model("model_upload", "mdu");
 		$this->load->model("model_user", "mus");
 		$this->load->model("model_status", "mds");
+		$this->load->model("model_history", "mdh");
 
 		$this->load->library('session');
 		if (!$this->session->userdata("login")) {
@@ -49,11 +50,12 @@ class Admin extends CI_Controller
 	{
 		redirect('admin/dashboard');
 	}
-	public function dashboard($type = 'Datin', $regional = 'all')
+	public function dashboard($type = 'datin', $regional = 'all')
 	{
-		$this->data['title'] = "Dashboard Datin";
-		$this->data['all'] = $this->mdu->get_all_data();
+		$this->data['title'] = "Dashboard ".ucwords($type) ;
+		$this->data['all'] = $this->mdu->get_all_data($type);
 		$this->data['regional'] = $regional;
+		$this->data['type'] = $type;
 		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		// foreach ($this->data['kota'] as $rows) {
 		// 	if ($sel == $rows['Nick']) {
@@ -73,6 +75,7 @@ class Admin extends CI_Controller
 	{
 		$this->data['title'] = "Upload";
 		$this->data['table'] = $this->mdu->view_all_table();
+		$this->data['history'] = $this->mdh->load();
 		// print_r($this->data['table']);
 		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		$this->load->view('admin/header', $this->data);
@@ -91,7 +94,7 @@ class Admin extends CI_Controller
 		$this->load->view('admin/footer');
 	}
 
-	public function upload_file()
+	public function upload_file($type)
 	{
 		$this->load->library('excel_reader');
 		// upload file xls
@@ -106,33 +109,46 @@ class Admin extends CI_Controller
 		//$data->setOutputEncoding('CPa25a');
 		// print_r($dataO);
 		$hasil = $dataO->read($_FILES['uploadfile']['name']);
+		unlink($_FILES['uploadfile']['name']);
 		if ($hasil == 1076) {
-			$this->session->set_flashdata('msg_f', 'Gagal upload file karena tidak terbaca atau extensi tidak sesuai');
+			$this->session->set_flashdata('msg_f', 'Gagal upload file karena file tidak terbaca atau extensi file tidak sesuai');
 			redirect('admin/upload');
 		}
-		$this->mdu->delete_all('tb_upload');
+		// $this->mdu->delete_all('tb_upload');
 		ini_set('memory_limit', '-1');
-		$data = $dataO->sheets[0]['cells'];
-		//print_r($data);
+		$cells = $dataO->boundsheets;
+		foreach ($cells as $keys => $rows) {
+			if (strcasecmp($rows['name'], $type) == 0) {
+				$data = $dataO->sheets[$keys]['cells'];
+				$jumlah_baris = $dataO->sheets[$keys]['numRows'];
+				$jumlah_kolom = $dataO->sheets[$keys]['numCols'];
+			}
+		}
+		// $data = $dataO->sheets[0]['cells'];
+		// foreach($cells as $keys => $rows)
+		// 	// if(strcmp($rows['name'], 'asd'))
+		// 		echo strcasecmp($rows['name'], 'datin').'<br>';
+		// print_r($dataO->boundsheets);
+		// print_r($data);
 		// menghitung jumlah baris data yang ada
-		$jumlah_baris = $dataO->sheets[0]['numRows'];
-		$jumlah_kolom = $dataO->sheets[0]['numCols'];
+
 		// jumlah default data yang berhasil di import
 		$berhasil = 0;
 
 		for ($i = 1; $i <= $jumlah_kolom; $i++) {
-			if ($data[1][$i] == "Customer Name") $cust_name_col = $i;
-			if ($data[1][$i] == "Customer Segment") $cust_segment_col = $i;
-			if ($data[1][$i] == "Service ID") $serv_id_col = $i;
-			if ($data[1][$i] == "Service No") $serv_no_col = $i;
-			if ($data[1][$i] == "Top Priority") $top_prio_col = $i;
-			if ($data[1][$i] == "TTR Customer") $ttr_cust_col = $i;
-			if ($data[1][$i] == "COMPLIANCE") $compliance_col = $i;
-			if ($data[1][$i] == "Witel") $witel_col = $i;
-			if ($data[1][$i] == "Regional") $regional_col = $i;
-			if ($data[1][$i] == "exclude") $exclude_col = $i;
-			if ($data[1][$i] == "GAMAS") $gamas_col = $i;
+			if (strcasecmp($data[1][$i], "Customer Name") == 0) $cust_name_col = $i;
+			if (strcasecmp($data[1][$i], "Customer Segment") == 0) $cust_segment_col = $i;
+			if (strcasecmp($data[1][$i], "Service ID") == 0) $serv_id_col = $i;
+			if (strcasecmp($data[1][$i], "Service No") == 0) $serv_no_col = $i;
+			if (strcasecmp($data[1][$i], "Top Priority") == 0) $top_prio_col = $i;
+			if (strcasecmp($data[1][$i], "TTR Customer") == 0) $ttr_cust_col = $i;
+			if (strcasecmp($data[1][$i], "COMPLIANCE") == 0) $compliance_col = $i;
+			if (strcasecmp($data[1][$i], "Witel") == 0) $witel_col = $i;
+			if (strcasecmp($data[1][$i], "Regional") == 0) $regional_col = $i;
+			if (strcasecmp($data[1][$i], "exclude") == 0) $exclude_col = $i;
+			if (strcasecmp($data[1][$i], "GAMAS") == 0) $gamas_col = $i;
 		}
+		$id_history = array();
 		for ($i = 2; $i <= $jumlah_baris; $i++) {
 			// menangkap data dan memasukkan ke variabel sesuai dengan kolumnya masing-masing
 
@@ -170,16 +186,35 @@ class Admin extends CI_Controller
 				'witel' => $witel,
 				'regional' => $regional,
 				'exclude' => $exclude,
-				'gamas' => $gamas
+				'gamas' => $gamas,
+				'type' => $type,
+				'status' => 'show'
 			);
 			$data_save = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $data_save);
 			$berhasil++;
-			$this->mdu->save($data_save);
+			array_push($id_history, $this->mdu->save($data_save));
 		}
 		// hapus kembali file .xls yang di upload tadi
-		unlink($_FILES['uploadfile']['name']);
-		$this->session->set_flashdata('msg_s', "Berhasil Upload $berhasil data");
-		redirect('admin/dashboard');
+		if($berhasil != 0)
+			$this->session->set_flashdata('msg_s', "Berhasil upload $berhasil data");
+		else {
+			$this->session->set_flashdata('msg_f', "Gagal upload data");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+		// $tanggal = '07-12-2017 09:43:13';
+		// $tanggal = strtotime($tanggal);
+		// $tanggal = date('Y-m-d H:i:s',$tanggal);
+		$data_history = array (
+			'awal' => min($id_history),
+			'akhir' => max($id_history),
+			'tanggal' => date("Y-m-d H:i:s"),
+			// 'tanggal' => $tanggal
+			'type' => $type,
+			'status' => 'view'
+		);
+		print_r($data_history);
+		$this->mdh->save($data_history);
+		redirect('admin/dashboard/'.$type);
 	}
 	public function ubah($type, $id = null, $photo = null)
 	{
@@ -342,10 +377,15 @@ class Admin extends CI_Controller
 		// print_r($this->data['all']);
 
 	}
-	public function test_2()
+	public function test_2($data = null)
 	{
-		$this->data['all'] = $this->mdu->get_all_data();
-		print_r($this->data['all']);
+		$this->data['all'] = $this->mdu->get_all_data('datin');
+		if ($data)
+			print_r($data);
+		else
+			print_r($this->data['all']);
+		// $this->mdu->delete_all($data);
+
 	}
 
 	function pindah_gambar($files, $id)
@@ -367,6 +407,16 @@ class Admin extends CI_Controller
 		else
 			redirect('admin/ubah/' . $type . '/' . $id . '/' . $target);
 	}
-	public function do_upload()
-	{ }
+	public function delete_history($id)
+	{
+		$this->mdh->delete_where_id($id);
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+	public function hide_table($id, $type='hide')
+	{
+		$history = $this->mdh->load_by_id($id);
+		$this->mdu->hide_table(array('id >=' => $history['awal'], 'id<=' => $history['akhir']), $type);
+		$this->mdh->hide_table($id, $type);
+		redirect($_SERVER['HTTP_REFERER']);
+	}
 }

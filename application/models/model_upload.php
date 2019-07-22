@@ -12,7 +12,7 @@ class Model_upload extends CI_Model
 		parent::__construct();
 		$this->load->database();
 	}
-	public function get_all_data()
+	public function get_all_data($type)
 	{
 		$data = array();
 		$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
@@ -21,17 +21,19 @@ class Model_upload extends CI_Model
 		$this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
 		$this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
 		$this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DGS" THEN 1 ELSE 0 END) as t20dgs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DES" THEN 1 ELSE 0 END) as t20des');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DBS" THEN 1 ELSE 0 END) as t100dbs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DGS" THEN 1 ELSE 0 END) as t100dgs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP200 DES" THEN 1 ELSE 0 END) as t200des');
-		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DGS" THEN 1 ELSE 0 END) as odgs');
-		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DES" THEN 1 ELSE 0 END) as odes');
-		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DBS" THEN 1 ELSE 0 END) as odbs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DGS" OR top_prio="TOP20 DGS POTS" THEN 1 ELSE 0 END) as t20dgs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DES" OR top_prio="TOP20 DES POTS" THEN 1 ELSE 0 END) as t20des');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DBS" OR top_prio="TOP100 DBS POTS" THEN 1 ELSE 0 END) as t100dbs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DGS" OR top_prio="TOP100 DGS POTS" THEN 1 ELSE 0 END) as t100dgs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP200 DES" OR top_prio="TOP200 DES POTS" THEN 1 ELSE 0 END) as t200des');
+		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DGS" OR top_prio="OTHERS DGS POTS" THEN 1 ELSE 0 END) as odgs');
+		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DES" OR top_prio="OTHERS DES POTS" THEN 1 ELSE 0 END) as odes');
+		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DBS" OR top_prio="OTHERS DBS POTS" THEN 1 ELSE 0 END) as odbs');
 		$this->db->select('AVG(ttr_cust) as ttr_avg');
 		$this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
 		$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
+		$this->db->where('type', $type);
+		$this->db->where('status', 'show');
 		$data = $this->db->get($this->table)->result_array()[0];
 		$this->db->select('regional');
 		$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
@@ -40,18 +42,20 @@ class Model_upload extends CI_Model
 		$this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
 		$this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
 		$this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DGS" THEN 1 ELSE 0 END) as t20dgs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DES" THEN 1 ELSE 0 END) as t20des');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DBS" THEN 1 ELSE 0 END) as t100dbs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DGS" THEN 1 ELSE 0 END) as t100dgs');
-		$this->db->select('SUM(CASE WHEN top_prio="TOP200 DES" THEN 1 ELSE 0 END) as t200des');
-		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DGS" THEN 1 ELSE 0 END) as odgs');
-		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DES" THEN 1 ELSE 0 END) as odes');
-		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DBS" THEN 1 ELSE 0 END) as odbs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DGS" OR top_prio="TOP20 DGS POTS" THEN 1 ELSE 0 END) as t20dgs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP20 DES" OR top_prio="TOP20 DES POTS" THEN 1 ELSE 0 END) as t20des');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DBS" OR top_prio="TOP100 DBS POTS" THEN 1 ELSE 0 END) as t100dbs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP100 DGS" OR top_prio="TOP100 DGS POTS" THEN 1 ELSE 0 END) as t100dgs');
+		$this->db->select('SUM(CASE WHEN top_prio="TOP200 DES" OR top_prio="TOP200 DES POTS" THEN 1 ELSE 0 END) as t200des');
+		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DGS" OR top_prio="OTHERS DGS POTS" THEN 1 ELSE 0 END) as odgs');
+		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DES" OR top_prio="OTHERS DES POTS" THEN 1 ELSE 0 END) as odes');
+		$this->db->select('SUM(CASE WHEN top_prio="OTHERS DBS" OR top_prio="OTHERS DBS POTS" THEN 1 ELSE 0 END) as odbs');
 		$this->db->select('AVG(ttr_cust) as ttr_avg');
 		$this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
 		$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
 		$this->db->group_by('regional');
+		$this->db->where('type', $type);
+		$this->db->where('status', 'show');
 		$data['regional_list'] = $this->db->get($this->table)->result_array();
 		foreach ($data['regional_list'] as $keys => $rows) {
 			$this->db->select('regional, witel');
@@ -61,23 +65,25 @@ class Model_upload extends CI_Model
 			$this->db->select('AVG(CASE WHEN cust_segment="DBS" THEN ttr_cust END) as ttr_dbs');
 			$this->db->select('AVG(CASE WHEN cust_segment="DES" THEN ttr_cust END) as ttr_des');
 			$this->db->select('AVG(CASE WHEN cust_segment="DGS" THEN ttr_cust END) as ttr_dgs');
-			$this->db->select('SUM(CASE WHEN top_prio="TOP20 DGS" THEN 1 ELSE 0 END) as t20dgs');
-			$this->db->select('SUM(CASE WHEN top_prio="TOP20 DES" THEN 1 ELSE 0 END) as t20des');
-			$this->db->select('SUM(CASE WHEN top_prio="TOP100 DBS" THEN 1 ELSE 0 END) as t100dbs');
-			$this->db->select('SUM(CASE WHEN top_prio="TOP100 DGS" THEN 1 ELSE 0 END) as t100dgs');
-			$this->db->select('SUM(CASE WHEN top_prio="TOP200 DES" THEN 1 ELSE 0 END) as t200des');
-			$this->db->select('SUM(CASE WHEN top_prio="OTHERS DGS" THEN 1 ELSE 0 END) as odgs');
-			$this->db->select('SUM(CASE WHEN top_prio="OTHERS DES" THEN 1 ELSE 0 END) as odes');
-			$this->db->select('SUM(CASE WHEN top_prio="OTHERS DBS" THEN 1 ELSE 0 END) as odbs');
+			$this->db->select('SUM(CASE WHEN top_prio="TOP20 DGS" OR top_prio="TOP20 DGS POTS" THEN 1 ELSE 0 END) as t20dgs');
+			$this->db->select('SUM(CASE WHEN top_prio="TOP20 DES" OR top_prio="TOP20 DES POTS" THEN 1 ELSE 0 END) as t20des');
+			$this->db->select('SUM(CASE WHEN top_prio="TOP100 DBS" OR top_prio="TOP100 DBS POTS" THEN 1 ELSE 0 END) as t100dbs');
+			$this->db->select('SUM(CASE WHEN top_prio="TOP100 DGS" OR top_prio="TOP100 DGS POTS" THEN 1 ELSE 0 END) as t100dgs');
+			$this->db->select('SUM(CASE WHEN top_prio="TOP200 DES" OR top_prio="TOP200 DES POTS" THEN 1 ELSE 0 END) as t200des');
+			$this->db->select('SUM(CASE WHEN top_prio="OTHERS DGS" OR top_prio="OTHERS DGS POTS" THEN 1 ELSE 0 END) as odgs');
+			$this->db->select('SUM(CASE WHEN top_prio="OTHERS DES" OR top_prio="OTHERS DES POTS" THEN 1 ELSE 0 END) as odes');
+			$this->db->select('SUM(CASE WHEN top_prio="OTHERS DBS" OR top_prio="OTHERS DBS POTS" THEN 1 ELSE 0 END) as odbs');
 			$this->db->select('AVG(ttr_cust) as ttr_avg');
 			$this->db->select('SUM(CASE WHEN compliance="COMPLY" THEN 1 ELSE 0 END) as com');
 			$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
 			$this->db->group_by('regional, witel');
 			$this->db->where('regional', $rows['regional']);
+			$this->db->where('type', $type);
+			$this->db->where('status', 'show');
 			$data['regional_list'][$keys]['witel_list'] = array();
 			$data['regional_list'][$keys]['witel_list'] += $this->db->get($this->table)->result_array();
 		}
-		
+
 		return $data;
 	}
 	public function count_all_a()
@@ -180,6 +186,8 @@ class Model_upload extends CI_Model
 	public function save($data)
 	{
 		$this->db->insert($this->table, $data);
+		$id = $this->db->insert_id();
+		return $id;
 	}
 
 	function backup($table_from, $table_to)
@@ -195,5 +203,11 @@ class Model_upload extends CI_Model
 	{
 		$query = $this->db->get($table);
 		return $query->result_array();
+	}
+	public function hide_table($data, $type)
+	{
+		$this->db->where($data);
+		$this->db->update($this->table, array('status' => $type));
+		// return $query->result_array();
 	}
 }

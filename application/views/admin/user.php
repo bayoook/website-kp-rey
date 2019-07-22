@@ -1,5 +1,4 @@
-            <div class="container-fluid" style="margin-bottom:100px">
-                <h3 class="text-dark mb-4">Team</h3>
+
                 <div class="card shadow">
                     <div class="card-header py-3 d-flex justify-content-between">
                         <p class="text-primary m-0 font-weight-bold">Employee Info</p>

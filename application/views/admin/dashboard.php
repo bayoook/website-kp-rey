@@ -1,24 +1,16 @@
-<!-- <?php print_r($user) ?> -->
-<div class="container-fluid">
-    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-        <!-- <?php print_r($user) ?> -->
-        <h3 class="text-dark mb-0">Dashboard</h3>
-        <?php if ($berhasil) { ?>
-            <h6 class="text-success mb-0">Success import <?php echo $berhasil ?> data</h6>
-        <?php } ?>
-    </div>
+
     <div class="row" style="padding: 10px;">
         <div class="col d-xl-flex align-items-xl-center">
             <h4 style="margin: 0px;">Pilih Regional :  </h4>
-            <div class="dropdown no-arrow">
+            <div class="dropdown no-arrow" style="max-width:160px">
                 <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?php if ($regional == 'all') echo "Semua";
                                                                                                                                 else foreach ($all['regional_list'] as $keys => $row) if ($keys + 1 == $regional) echo "Regional " . $row['regional'] ?></button>
                 <div class="dropdown-menu shadow dropdown-menu-left animated--fade-in" role="menu">
                     <p class="text-center dropdown-header">Witel</p>
-                    <a class="text-center dropdown-item <?php if ($regional == 'all') echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/datin/all">Semua</a>
+                    <a class="text-center dropdown-item <?php if ($regional == 'all') echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/<?=$type?>/all">Semua</a>
                     <?php
                     foreach ($all['regional_list'] as $keys => $rows) { ?>
-                        <a class="text-center dropdown-item <?php if ($regional == $keys + 1) echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/datin/<?= $keys + 1 ?>">Regional <?= $rows['regional'] ?></a>
+                        <a class="text-center dropdown-item <?php if ($regional == $keys + 1) echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/<?= $type.'/'.($keys + 1) ?>">Regional <?= $rows['regional'] ?></a>
                     <?php } ?>
                 </div>
             </div>
@@ -61,7 +53,7 @@
                                             echo '"';
                                         else
                                             echo ',"';
-                                        echo number_format($rows['ttr_dbs'], 2);
+                                        echo number_format($rows['ttr_dbs'], 2, '.', '');
                                         echo '"';
                                     }
                                 } else {
@@ -70,7 +62,7 @@
                                             echo '"';
                                         else
                                             echo ',"';
-                                        echo number_format($rows['ttr_dbs'], 2);
+                                        echo number_format($rows['ttr_dbs'], 2, '.', '');
                                         echo '"';
                                     }
                                 } ?>
@@ -82,7 +74,7 @@
                                             echo '"';
                                         else
                                             echo ',"';
-                                        echo number_format($rows['ttr_des'], 2);
+                                        echo number_format($rows['ttr_des'], 2, '.', '');
                                         echo '"';
                                     }
                                 } else {
@@ -91,7 +83,7 @@
                                             echo '"';
                                         else
                                             echo ',"';
-                                        echo number_format($rows['ttr_des'], 2);
+                                        echo number_format($rows['ttr_des'], 2, '.', '');
                                         echo '"';
                                     }
                                 } ?>
@@ -103,7 +95,7 @@
                                             echo '"';
                                         else
                                             echo ',"';
-                                        echo number_format($rows['ttr_dgs'], 2);
+                                        echo number_format($rows['ttr_dgs'], 2, '.', '');
                                         echo '"';
                                     }
                                 } else {
@@ -112,7 +104,7 @@
                                             echo '"';
                                         else
                                             echo ',"';
-                                        echo number_format($rows['ttr_dgs'], 2);
+                                        echo number_format($rows['ttr_dgs'], 2,'.','');
                                         echo '"';
                                     }
                                 } ?>
@@ -201,7 +193,6 @@
                                             </tr>
                                         </thead>
                                         <tbody class="">
-
                                             <?php if ($regional == 'all') {
                                                 foreach ($all['regional_list'] as $keys => $rows) { ?>
                                                     <tr class="text-center">
