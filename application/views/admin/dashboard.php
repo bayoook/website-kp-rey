@@ -1,4 +1,4 @@
-<div class="row d-flex" style="padding: 0px">
+<div class="row d-flex mt-n3" style="padding: 0px">
     <div class="col-md-5 col-sm-12 d-flex align-items-center justify-content-start mt-2">
         <h4 style="margin: 0px;">Pilih Regional :  </h4>
         <div class="dropdown no-arrow" style="max-width:160px">
@@ -30,13 +30,14 @@
 </div>
 <div class="row" style="margin-top:20px">
     <div class="col-lg-8 col-xl-8">
-        <div class="card shadow mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="text-primary font-weight-bold m-0">Average TTR Customer Segment</h6>
+        <div class="card shadow">
+            <div class="card-header d-flex py-3 justify-content-between align-items-center">
+                <h6 class=" m-0 font-weight-bold text-primary">Average TTR Customer Segment</h6>
+                <button class="btn-sm m-0 btn-info small" name="chart"></button> 
             </div>
-            <div class="card-body">
+            <div class="card-body cb-chart" style="height:360px">
                 <div class="chart-area">
-                    <canvas data-bs-chart='{"type":"horizontalBar",
+                    <canvas data-bs-chart='{"type":"<?=$type_chart?>",
                             "data":{"labels":[
                                 <?php if ($regional == 'all') {
                                     foreach ($all['regional_list'] as $keys => $rows) {
@@ -58,7 +59,7 @@
                                     }
                                 } ?>
                                 ],
-                            "datasets":[{"label":"DBS","backgroundColor":"#4e73df","borderColor":"white","data":[
+                            "datasets":[{"label":"DBS","backgroundColor":"rgba(78, 114, 223, 1.0)","borderColor":"white","data":[
                                 <?php if ($regional == 'all') {
                                     foreach ($all['regional_list'] as $keys => $rows) {
                                         if ($keys == 0)
@@ -79,7 +80,7 @@
                                     }
                                 } ?>
                                 ]},
-                            {"label":"DES","backgroundColor":"#df4e4e","borderColor":"white","data":[
+                            {"label":"DES","backgroundColor":"rgba(223, 78, 78, 1.0)","borderColor":"white","data":[
                                 <?php if ($regional == 'all') {
                                     foreach ($all['regional_list'] as $keys => $rows) {
                                         if ($keys == 0)
@@ -100,7 +101,7 @@
                                     }
                                 } ?>
                                 ]},
-                            {"label":"DGS","backgroundColor":"#62df4e","borderColor":"white","data":[
+                            {"label":"DGS","backgroundColor":"rgba(98, 223, 78, 1.0)","borderColor":"white","data":[
                                 <?php if ($regional == 'all') {
                                     foreach ($all['regional_list'] as $keys => $rows) {
                                         if ($keys == 0)
@@ -188,11 +189,12 @@
             </div>
         </div> -->
     <div class="col-lg-4 col-xl-4">
-        <div class="card shadow mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="text-primary font-weight-bold m-0">Ranking</h6>
+        <div class="card shadow">
+            <div class="card-header d-flex py-3 justify-content-between align-items-center">
+                <h6 class=" m-0 font-weight-bold text-primary">Ranking Table</h6>
+                <button class="btn-sm m-0 btn-info small" name="ranking"></button> 
             </div>
-            <div class="card-body" style="height:360px">
+            <div class="card-body cb-table-ranking" style="height:360px">
                 <div class="table-responsive">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row" id="aaa">
@@ -229,25 +231,26 @@
         </div>
     </div>
 </div>
-<div class="row text-left">
+<!-- <div class="row text-left">
     <div class="bottomView">
         <div class="col">
             <a class="btn btn-primary btn-sm btn-icon-split" role="button" id="tampil" style="margin-bottom:1px;">
                 <span class="text-white-50 icon">
                     <i class="fas fa-table"></i>
                 </span>
-                <span class="text-white text" id="button_show_hide">Show Table</span>
+                <span class="text-white text" id="button_show_hide"></span>
             </a>
         </div>
     </div>
-</div>
-<div class="row" id="table_show" style="display:none">
+</div> -->
+<div class="row" id="table_show" style="display:">
     <div class="col-12">
-        <div class="card shadow mb-4" style="margin-top:20px">
-            <div class="card-header py-3">
+        <div class="card shadow" style="margin-top:20px">
+            <div class="card-header d-flex py-3 justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Full Table</h6>
+                <button class="btn-sm m-0 btn-info small" name="full"></button> 
             </div>
-            <div class="card-body">
+            <div class="card-body cb-table-full">
                 <div class="table-responsive">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row">
@@ -319,25 +322,25 @@
                                                 <th><?= $all['dbs'] ?></th>
                                                 <th><?= $all['des'] ?></th>
                                                 <th><?= $all['dgs'] ?></th>
-                                                <th><?= number_format($all['ttr_dbs'],2) ?></th>
-                                                <th><?= number_format($all['ttr_des'],2) ?></th>
-                                                <th><?= number_format($all['ttr_dgs'],2) ?></th>
-                                                <th><?= number_format($all['ttr_avg'],2) ?></th>
+                                                <th><?= number_format($all['ttr_dbs'], 2) ?></th>
+                                                <th><?= number_format($all['ttr_des'], 2) ?></th>
+                                                <th><?= number_format($all['ttr_dgs'], 2) ?></th>
+                                                <th><?= number_format($all['ttr_avg'], 2) ?></th>
                                                 <th>0</th>
                                                 <th><?= $all['com'] ?></th>
                                                 <th><?= $all['not_com'] ?></th>
                                             <?php } else { ?>
-                                                <th><?= $all['regional_list'][$regional-1]['dbs'] + $all['regional_list'][$regional-1]['des'] + $all['regional_list'][$regional-1]['dgs'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['dbs'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['des'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['dgs'] ?></th>
-                                                <th><?= number_format($all['regional_list'][$regional-1]['ttr_dbs'],2) ?></th>
-                                                <th><?= number_format($all['regional_list'][$regional-1]['ttr_des'],2) ?></th>
-                                                <th><?= number_format($all['regional_list'][$regional-1]['ttr_dgs'],2) ?></th>
-                                                <th><?= number_format($all['regional_list'][$regional-1]['ttr_avg'],2) ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['dbs'] + $all['regional_list'][$regional - 1]['des'] + $all['regional_list'][$regional - 1]['dgs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['dbs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['des'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['dgs'] ?></th>
+                                                <th><?= number_format($all['regional_list'][$regional - 1]['ttr_dbs'], 2) ?></th>
+                                                <th><?= number_format($all['regional_list'][$regional - 1]['ttr_des'], 2) ?></th>
+                                                <th><?= number_format($all['regional_list'][$regional - 1]['ttr_dgs'], 2) ?></th>
+                                                <th><?= number_format($all['regional_list'][$regional - 1]['ttr_avg'], 2) ?></th>
                                                 <th>0</th>
-                                                <th><?= $all['regional_list'][$regional-1]['com'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['not_com'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['com'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['not_com'] ?></th>
                                             <?php } ?>
                                         </tr>
                                     </tfoot>
@@ -350,11 +353,12 @@
         </div>
     </div>
     <div class="col-xl-9">
-        <div class="card shadow mb-4" style="margin-top:20px">
-            <div class="card-header py-3">
+        <div class="card shadow" style="margin-top:20px">
+            <div class="card-header d-flex py-3 justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Top Priority Table</h6>
+                <button class="btn-sm m-0 btn-info small" name="priority"></button> 
             </div>
-            <div class="card-body">
+            <div class="card-body cb-table-priority">
                 <div class="table-responsive">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row">
@@ -419,14 +423,14 @@
                                                 <th><?= $all['odes'] ?></th>
                                                 <th><?= $all['odbs'] ?></th>
                                             <?php } else { ?>
-                                                <th><?= $all['regional_list'][$regional-1]['t20dgs'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['t20des'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['t100dbs'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['t100dgs'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['t200des'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['odgs'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['odes'] ?></th>
-                                                <th><?= $all['regional_list'][$regional-1]['odbs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['t20dgs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['t20des'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['t100dbs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['t100dgs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['t200des'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['odgs'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['odes'] ?></th>
+                                                <th><?= $all['regional_list'][$regional - 1]['odbs'] ?></th>
                                             <?php } ?>
                                         </tr>
                                     </tfoot>
@@ -439,11 +443,12 @@
         </div>
     </div>
     <div class="col">
-        <div class="card shadow mb-4" id="table" style="margin-top:20px">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Average Table</h6>
+        <div class="card shadow" id="table" style="margin-top:20px">
+            <div class="card-header d-flex py-3 justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Average TTR Table</h6>
+                <button class="btn-sm m-0 btn-info small" name="average"></button> 
             </div>
-            <div class="card-body">
+            <div class="card-body cb-table-average">
                 <div class="table-responsive">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row" id="">

@@ -1,6 +1,8 @@
 const flashData_f = $('.flash-data-f').data('flashdata');
 const flashData_s = $('.flash-data-s').data('flashdata');
 $(document).ready(function () {
+    chart = $('canvas');
+    console.log('chart :', chart);
     $('[data-bs-chart]').each(function (index, elem) {
         var chart = new Chart($(elem), $(elem).data('bs-chart'));
     });
@@ -11,8 +13,6 @@ $(document).ready(function () {
         "searching": false,
     });
     $('#history_table').DataTable({
-        // "paging": false,
-        // "bInfo": false,
         "searching": false,
     });
     $('#top_prio_table').DataTable({
@@ -21,7 +21,9 @@ $(document).ready(function () {
         "searching": false,
     });
     $('#example').DataTable({
-        order: [[2, 'asc']],
+        order: [
+            [2, 'asc']
+        ],
         rowGroup: {
             dataSrc: 2
         }
@@ -30,13 +32,18 @@ $(document).ready(function () {
         "scrollY": "264px",
         "scrollCollapse": true,
         "paging": false,
-        "bPaginate": false,
         "bInfo": false,
         "searching": false,
         rowReorder: true,
-        columnDefs: [
-            { orderable: true, className: 'reorder', targets: 1 },
-            { orderable: false, targets: '_all' }
+        columnDefs: [{
+            orderable: true,
+            className: 'reorder',
+            targets: 1
+        },
+        {
+            orderable: false,
+            targets: '_all'
+        }
         ]
     });
     table.order([1, 'asc']).draw();
@@ -55,9 +62,7 @@ $(document).ready(function () {
         });
     }
     $(".form_upload").submit(function (e) {
-        console.log('asd');
         const href = $(this).attr('action');
-        // e.preventDefault(); // stops the default action
         Swal.fire({
             showConfirmButton: false,
             allowOutsideClick: false,
@@ -73,7 +78,6 @@ $(document).ready(function () {
         const href = $(this).attr('href');
         const user = $(this).attr('value');
         const status = $(this).attr('status');
-        console.log('status :', status);
         Swal.fire({
             title: "Apakah anda yakin",
             text: "akan menghapus " + status + " " + user + "?",
@@ -102,22 +106,75 @@ $(document).ready(function () {
             cancelButtonText: 'Tidak',
         }).then((result) => {
             if (result.value) {
+                setCookie('table', '', '')
+                setCookie('full', '', '')
+                setCookie('average', '', '')
+                setCookie('priority', '', '')
+                setCookie('ranking', '', '')
+                setCookie('chart', '', '')
                 document.location.href = href;
             }
         });
     });
-    $('#tampil').on('click', function (e) {
-        e.preventDefault;
-        // console.log('asd');
-        if ($('#table_show').is(':hidden')) {
-            $('#button_show_hide').html('Hide Table');
-            $("html, body").animate({
-                scrollTop: $(".bottomView").offset().top - 15
-            }, 1000);
-            $('#table_show').slideDown(1000);
-        } else {
-            $('#button_show_hide').html('Show Table');
-            $('#table_show').slideUp(1000);
+    $('.card-header button').on('click', function (e) {
+        name = $(this).attr('name');
+        interfal = 700
+        if ($(this).parent().next().is(':visible')) {
+            $(this).parent().next().slideUp(interfal);
+            if (name == 'chart')
+                $(this).html('Show Chart');
+            else $(this).html('Show Table');
+            setCookie(name, 'hide', 1);
         }
-    });
+        else {
+            $(this).parent().next().slideDown(interfal);
+            if (name == 'chart')
+                $(this).html('Hide Chart');
+            else $(this).html('Hide Table');
+            setCookie(name, 'show', 1);
+            if (name == 'ranking')
+                table.order([1, 'asc']).draw();
+            if (name != 'ranking' && name != 'chart')
+                $("html, body").animate({
+                    scrollTop: $(this).parent().parent().offset().top - 15
+                }, interfal);
+        }
+    })
+
 });
+check_sh('chart'); check_sh('ranking'); check_sh('full'); check_sh('priority'); check_sh('average');
+function check_sh(cname) {
+    button_sh = $(".card-header button[name*='" + cname + "']")
+    if (getCookie(cname) == 'hide') {
+        if(cname == 'chart')
+            button_sh.html('Show Chart')
+        else button_sh.html('Show Table');
+        button_sh.parent().next().hide()
+    } else {
+        if(cname == 'chart')
+            button_sh.html('Hide Chart')
+        else button_sh.html('Hide Table');
+        button_sh.parent().next().show()
+    }
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}

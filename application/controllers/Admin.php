@@ -55,6 +55,8 @@ class Admin extends CI_Controller
 		// print_r($_SESSION['filter_cal']);
 		$this->data['max'] = $this->mdu->get_maximum_date($type);
 		$this->data['min'] = $this->mdu->get_minimum_date($type);
+		$this->data['type_chart'] = 'horizontalBar';
+		// $this->data['type_chart'] = 'line';
 		$start = $this->session->userdata('filter_cal')['start'];
 		$end = $this->session->userdata('filter_cal')['end'];
 		if (!(isset($start) && isset($end))) {
@@ -63,11 +65,16 @@ class Admin extends CI_Controller
 		}
 		$this->data['title'] = "Dashboard " . ucwords($type);
 		$this->data['all'] = $this->mdu->get_all_data($type, $start, $end);
+		$max_id = $this->maxKey($this->data['all']['regional_list']);
+		if ($regional != 'all')
+			if ($regional - 1 > $max_id) {
+				$this->data['all']['regional_list'][$regional - 1]['witel_list'] = array();
+			}
 		$this->data['regional'] = $regional;
 		$this->data['type'] = $type;
 		$this->data['start'] = $start;
 		$this->data['end'] = $end;
-		// print_r($this->data);
+		// print_r($this->data['all']);
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/dashboard', $this->data);
 		$this->load->view('admin/footer');
@@ -79,7 +86,7 @@ class Admin extends CI_Controller
 			$this->session->set_flashdata('msg_f', 'Tanggal inputan salah');
 			redirect($_SERVER['HTTP_REFERER']);
 		}
-		if($form['start'] == '' || $form['end'] == '') {
+		if ($form['start'] == '' || $form['end'] == '') {
 			$this->session->set_flashdata('msg_f', 'Tanggal inputan tidak boleh kosong');
 			redirect($_SERVER['HTTP_REFERER']);
 		}
@@ -405,15 +412,20 @@ class Admin extends CI_Controller
 		// print_r($this->data['all']);
 
 	}
-	public function test_2($data = null)
+	public function test_2($type = 'datin')
 	{
-		$this->data['all'] = $this->mdu->get_all_data('datin', '0000-00-00', '9999-12-31');;
-		if ($data)
-			print_r($data['all']);
-		else
-			print_r($this->data['all']);
-		// $this->mdu->delete_all($data);
-
+		$this->data['max'] = $this->mdu->get_maximum_date($type);
+		$this->data['min'] = $this->mdu->get_minimum_date($type);
+		$start = $this->session->userdata('filter_cal')['start'];
+		$end = $this->session->userdata('filter_cal')['end'];
+		if (!(isset($start) && isset($end))) {
+			$start = $this->data['min'];
+			$end = $this->data['max'];
+		}
+		$this->data['title'] = "Dashboard " . ucwords($type);
+		$this->data['all'] = $this->mdu->get_all_data($type, $start, $end);
+		$this->data['all']['mk_regional'] = $this->maxKey($this->data['all']['regional_list']);
+		print_r($this->data['all']);
 	}
 
 	function pindah_gambar($files, $id)
@@ -446,5 +458,13 @@ class Admin extends CI_Controller
 		$this->mdu->hide_table(array('id >=' => $history['awal'], 'id<=' => $history['akhir']), $type);
 		$this->mdh->hide_table($id, $type);
 		redirect($_SERVER['HTTP_REFERER']);
+	}
+	function maxKey($arr)
+	{
+		$maxKey = key($arr);
+		foreach ($arr as $k => $v) {
+			if ($k > $maxKey) $maxKey = $k;
+		}
+		return $maxKey;
 	}
 }
