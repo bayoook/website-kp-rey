@@ -7,15 +7,24 @@ $(document).ready(function () {
     $('#dataTable').dataTable();
     $('#full_table').DataTable({
         "paging": false,
-        "bPaginate": false,
         "bInfo": false,
+        "searching": false,
+    });
+    $('#history_table').DataTable({
+        // "paging": false,
+        // "bInfo": false,
         "searching": false,
     });
     $('#top_prio_table').DataTable({
         "paging": false,
-        "bPaginate": false,
         "bInfo": false,
         "searching": false,
+    });
+    $('#example').DataTable({
+        order: [[2, 'asc']],
+        rowGroup: {
+            dataSrc: 2
+        }
     });
     var table = $('#tableRank').DataTable({
         "scrollY": "264px",

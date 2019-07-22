@@ -13,6 +13,7 @@
 <script src="<?= base_url() ?>assets/js/sweetalert2.all.min.js"></script>
 <script src="<?= base_url() ?>assets/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url() ?>assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?= base_url() ?>assets/js/dataTables.rowGroup.min.js"></script>
 <script src="<?= base_url() ?>assets/js/theme.js"></script>
 <script src="<?= base_url() ?>assets/js/script.js"></script>
 <!-- <script src="<?= base_url() ?>assets/js/datatables.js"></script> -->

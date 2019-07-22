@@ -52,24 +52,39 @@ class Admin extends CI_Controller
 	}
 	public function dashboard($type = 'datin', $regional = 'all')
 	{
+		// print_r($_SESSION['filter_cal']);
+		$this->data['max'] = $this->mdu->get_maximum_date($type);
+		$this->data['min'] = $this->mdu->get_minimum_date($type);
+		$start = $this->session->userdata('filter_cal')['start'];
+		$end = $this->session->userdata('filter_cal')['end'];
+		if (!(isset($start) && isset($end))) {
+			$start = $this->data['min'];
+			$end = $this->data['max'];
+		}
 		$this->data['title'] = "Dashboard " . ucwords($type);
-		$this->data['all'] = $this->mdu->get_all_data($type);
+		$this->data['all'] = $this->mdu->get_all_data($type, $start, $end);
 		$this->data['regional'] = $regional;
 		$this->data['type'] = $type;
-		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
-		// foreach ($this->data['kota'] as $rows) {
-		// 	if ($sel == $rows['Nick']) {
-		// 		$this->data['nama'] = $rows['Nama'];
-		// 		$this->data['dbs'] = $rows['AVG_DBS'];
-		// 		$this->data['des'] = $rows['AVG_DES'];
-		// 		$this->data['dgs'] = $rows['AVG_DGS'];
-		// 		$this->data['comply'] = $rows['COMPLY'];
-		// 		$this->data['nComply'] = $rows['NOT_COMPLY'];
-		// 	}
-		// }
+		$this->data['start'] = $start;
+		$this->data['end'] = $end;
+		// print_r($this->data);
 		$this->load->view('admin/header', $this->data);
 		$this->load->view('admin/dashboard', $this->data);
 		$this->load->view('admin/footer');
+	}
+	public function filter_cal()
+	{
+		$form = $this->input->post();
+		if ($form['start'] > $form['end']) {
+			$this->session->set_flashdata('msg_f', 'Tanggal inputan salah');
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+		if($form['start'] == '' || $form['end'] == '') {
+			$this->session->set_flashdata('msg_f', 'Tanggal inputan tidak boleh kosong');
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+		$this->session->set_userdata('filter_cal', $form);
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 	public function upload()
 	{
@@ -125,8 +140,8 @@ class Admin extends CI_Controller
 				$jumlah_kolom = $dataO->sheets[$keys]['numCols'];
 				break;
 			}
-			if ($keys == $len - 1 && strcasecmp($rows['name'], $type) != 0) { 
-				$this->session->set_flashdata('msg_f', 'Tidak ada data '.$type.' di dalam file');
+			if ($keys == $len - 1 && strcasecmp($rows['name'], $type) != 0) {
+				$this->session->set_flashdata('msg_f', 'Tidak ada data ' . $type . ' di dalam file');
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 		}
@@ -372,9 +387,9 @@ class Admin extends CI_Controller
 	}
 	public function test($regional = 1, $witel = 1)
 	{
-		$this->data['all'] = $this->mdu->get_all_data();
-		$this->data['regional'] = $regional;
-		$this->data['witel'] = $witel;
+		// $this->data['all'] = $this->mdu->get_all_data();
+		// $this->data['regional'] = $regional;
+		// $this->data['witel'] = $witel;
 		// $this->data['title'] = "Dashboard Datin";
 		// $this->data['kota']['all'] = $this->mdu->count_all_a();
 		// $this->data['kota']['bandung'] = $this->mdu->count_all('(bandung)', 'bandung');
@@ -385,16 +400,16 @@ class Admin extends CI_Controller
 		// $this->data['kota']['karawang'] = $this->mdu->count_all('karawang', 'karawang');
 		// $this->data['user'] = $this->mus->read_user($this->data['user']['id']);
 		$this->load->view('admin/header', $this->data);
-		$this->load->view('admin/dashboard-2', $this->data);
+		$this->load->view('admin/test', $this->data);
 		$this->load->view('admin/footer');
 		// print_r($this->data['all']);
 
 	}
 	public function test_2($data = null)
 	{
-		$this->data['all'] = $this->mdu->get_all_data('datin');
+		$this->data['all'] = $this->mdu->get_all_data('datin', '0000-00-00', '9999-12-31');;
 		if ($data)
-			print_r($data);
+			print_r($data['all']);
 		else
 			print_r($this->data['all']);
 		// $this->mdu->delete_all($data);

@@ -12,7 +12,19 @@ class Model_upload extends CI_Model
 		parent::__construct();
 		$this->load->database();
 	}
-	public function get_all_data($type)
+	public function get_maximum_date($type)
+	{
+		$this->db->select('MAX(report_date) as max');
+		$this->db->where('type', $type);
+		return $this->db->get($this->table)->result_array()[0]['max'];
+	}
+	public function get_minimum_date($type)
+	{
+		$this->db->select('MIN(report_date) as min');
+		$this->db->where('type', $type);
+		return $this->db->get($this->table)->result_array()[0]['min'];
+	}
+	public function get_all_data($type, $date_start, $date_end)
 	{
 		$data = array();
 		$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
@@ -34,6 +46,8 @@ class Model_upload extends CI_Model
 		$this->db->select('SUM(CASE WHEN compliance="NOT COMPLY" THEN 1 ELSE 0 END) as not_com');
 		$this->db->where('type', $type);
 		$this->db->where('status', 'show');
+		$this->db->where('report_date >=', $date_start);
+		$this->db->where('report_date <=', $date_end);
 		$data = $this->db->get($this->table)->result_array()[0];
 		$this->db->select('regional');
 		$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
@@ -56,7 +70,10 @@ class Model_upload extends CI_Model
 		$this->db->group_by('regional');
 		$this->db->where('type', $type);
 		$this->db->where('status', 'show');
+		$this->db->where('report_date >=', $date_start);
+		$this->db->where('report_date <=', $date_end);
 		$data['regional_list'] = $this->db->get($this->table)->result_array();
+		// print_r($this->db->last_query());
 		foreach ($data['regional_list'] as $keys => $rows) {
 			$this->db->select('regional, witel');
 			$this->db->select('SUM(CASE WHEN cust_segment="DBS" THEN 1 ELSE 0 END) as dbs');
@@ -80,6 +97,8 @@ class Model_upload extends CI_Model
 			$this->db->where('regional', $rows['regional']);
 			$this->db->where('type', $type);
 			$this->db->where('status', 'show');
+			$this->db->where('report_date >=', $date_start);
+			$this->db->where('report_date <=', $date_end);
 			$data['regional_list'][$keys]['witel_list'] = array();
 			$data['regional_list'][$keys]['witel_list'] += $this->db->get($this->table)->result_array();
 		}
