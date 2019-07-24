@@ -20,7 +20,7 @@
 
 <body id="page-top" class="">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background-image: linear-gradient(to bottom, #F00000, #b31217)">
             <div class="container-fluid d-flex flex-column p-0 sticky-top">
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
@@ -37,37 +37,23 @@
                         <div id="collapseDashboard" class="collapse <?php if ($title == 'Dashboard Datin' or $title == 'Dashboard Pots') echo "show"; ?>" aria-labelledby="headingCollapse" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <!-- <h6 class="collapse-header">Testing</h6> -->
-                                <a class="collapse-item <?php if ($title == 'Dashboard Datin') echo "active"; ?>" href="<?= base_url() ?>admin/dashboard/datin">Datin</a>
-                                <a class="collapse-item <?php if ($title == 'Dashboard Pots') echo "active"; ?>" href="<?= base_url() ?>admin/dashboard/pots">Pots</a>
+                                <a class="collapse-item <?php if ($title == 'Dashboard Datin') echo "active"; ?>" href="<?= base_url("$url/dashboard/datin") ?>">Datin</a>
+                                <a class="collapse-item <?php if ($title == 'Dashboard Pots') echo "active"; ?>" href="<?= base_url("$url/dashboard/pots") ?>">Pots</a>
                             </div>
                         </div>
 
                     </li>
-                    <!-- <hr class="sidebar-divider"> -->
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link <?php if ($title == 'Upload') echo "active"; ?>" href="<?= base_url() ?>admin/upload">
-                            <i class="fas fa-fw fa-file-upload"></i>
-                            <span>File Upload</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link <?php if ($title == 'Profile') echo "active disabled"; ?>" href="<?= base_url() ?>admin/profile">
-                            <i class="fas fa-fw fa-user"></i>
-                            <span>Profile</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link <?php if ($title == 'User') echo "active disabled"; ?>" href="<?= base_url() ?>admin/user">
-                            <i class="fas fa-fw fa-user-circle"></i>
-                            <span>User</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="<?= base_url() ?>forgot-password.html">
-                            <i class="fas fa-fw fa-key"></i>
-                            <span>Forgotten Password</span>
-                        </a>
-                    </li>
+                    <?php
+                    foreach ($menu as $keys => $rows) {
+                        $url2 = $rows['url'];
+                        ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link <?php if ($title == $rows['title']) echo "active"; ?>" href="<?= base_url("$url/$url2") ?>">
+                                <i class="fas fa-fw <?= $rows['icon'] ?>"></i>
+                                <span><?= $rows['nama'] ?></span>
+                            </a>
+                        </li>
+                    <?php } ?>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -79,7 +65,7 @@
                         <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <h3 class="text-dark mt-2 ml-2"><?= $title; ?></h3>
                         <ul class="nav navbar-nav flex-nowrap ml-auto">
-                            
+
                             <li class="nav-item dropdown no-arrow" role="presentation">
                             <li class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
@@ -97,10 +83,10 @@
                                         <?= $user['email'] ?>
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item " role="presentation" href="<?= base_url() ?>admin/profile">
+                                    <a class="dropdown-item " role="presentation" href="<?= base_url("$url/profile") ?>">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Edit Profile
                                     </a>
-                                    <a class="dropdown-item user-logout" role="presentation" href="<?= base_url() ?>admin/logout">
+                                    <a class="dropdown-item user-logout" role="presentation" href="<?= base_url("$url/logout") ?>">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout
                                     </a>
                                 </div>

@@ -9,6 +9,10 @@
                                                 <h2>Silahkan upload file <strong>Datin</strong></h2>
                                             </div>
                                             <div class="card-body text-center">
+                                                <!-- <div class="form-group d-flex justify-content-between align-items-center">
+                                                    <label class="mr-2 mb-0" for="date">Tanggal Data : </label>
+                                                    <input class="form-control" name="date" type="date" value="" placeholder="Tanggal Data" autocomplete="" style="width:65%">
+                                                </div> -->
                                                 <div class="input-group-append" style="">
                                                     <div class="custom-file">
                                                         <input accept=".xls" required="required" name="uploadfile" type="file" id="inputGroupFile01" class="custom-file-input" aria-describedby="inputGroupFileAddon01">
@@ -61,23 +65,17 @@
                                                 <tr>
                                                     <th>Jumlah Data</th>
                                                     <th>Tipe Data</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Jam</th>
+                                                    <th>Nama File</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
                                                 <?php foreach ($history as $keys => $rows) {
-                                                    $tanggal_ = $rows['tanggal'];
-                                                    $tanggal_ = strtotime($tanggal_);
-                                                    $tanggal = date('d F Y', $tanggal_);
-                                                    $jam = date('H:i:s', $tanggal_);
                                                     ?>
                                                     <tr>
                                                         <td><?= ($rows['akhir'] - $rows['awal'] + 1); ?></td>
                                                         <td><?= ucwords($rows['type']); ?></td>
-                                                        <td><?= $tanggal; ?></td>
-                                                        <td><?= $jam; ?></td>
+                                                        <td><?= $rows['nama_file']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?= base_url() ?>admin/hide_table/<?= $rows['id'] ?>/<?php if ($rows['status'] == 'hide') echo 'show' ?>" class="btn btn-info btn-sm">
                                                                 <i class="far fa-eye<?php if ($rows['status'] == 'hide') echo '-slash' ?>"></i>

@@ -2,20 +2,20 @@
     <div class="col-md-5 col-sm-12 d-flex align-items-center justify-content-start mt-2">
         <h4 style="margin: 0px;">Pilih Regional :  </h4>
         <div class="dropdown no-arrow" style="max-width:160px">
-            <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?php if ($regional == 'all') echo "Semua";
+            <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?php if ($regional == 'all') echo "Semua";
                                                                                                                             else foreach ($all['regional_list'] as $keys => $row) if ($keys + 1 == $regional) echo "Regional " . $row['regional'] ?></button>
             <div class="dropdown-menu shadow dropdown-menu-left animated--fade-in" role="menu">
                 <p class="text-center dropdown-header">Witel</p>
-                <a class="text-center dropdown-item <?php if ($regional == 'all') echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/<?= $type ?>/all">Semua</a>
+                <a class="text-center dropdown-item <?php if ($regional == 'all') echo "disabled" ?>" role="presentation" href="<?= base_url($url) ?>/dashboard/<?= $type ?>/all">Semua</a>
                 <?php
                 foreach ($all['regional_list'] as $keys => $rows) { ?>
-                    <a class="text-center dropdown-item <?php if ($regional == $keys + 1) echo "disabled" ?>" role="presentation" href="<?= base_url() ?>admin/dashboard/<?= $type . '/' . ($keys + 1) ?>">Regional <?= $rows['regional'] ?></a>
+                    <a class="text-center dropdown-item <?php if ($regional == $keys + 1) echo "disabled" ?>" role="presentation" href="<?= base_url($url) ?>/dashboard/<?= $type . '/' . ($keys + 1) ?>">Regional <?= $rows['regional'] ?></a>
                 <?php } ?>
             </div>
         </div>
     </div>
     <div class="col mt-2">
-        <form class="d-sm-flex align-items-center justify-content-end" method="post" action="<?= base_url() ?>/admin/filter_cal/<?= "$type/$regional" ?>">
+        <form class="d-sm-flex align-items-center justify-content-end" method="post" action="<?= base_url($url) ?>/filter_cal/<?= "$type/$regional" ?>">
             <h6 style="margin: 0px;">Filter&nbsp;Tanggal&nbsp;:&nbsp;&nbsp;</h6>
             <div class="input-group" style="max-width:160px">
                 <input type="date" required class="form-control" name='start' value="<?= $start ?>" min="<?= $min ?>" max="<?= $max ?>" />
@@ -210,7 +210,7 @@
                                         <?php if ($regional == 'all') {
                                             foreach ($all['regional_list'] as $keys => $rows) { ?>
                                                 <tr class="text-center">
-                                                    <td>Regional <?= $rows['regional'] ?></td>
+                                                    <td><?php if(strcasecmp($rows['regional'],'nas')) echo 'Regional' ?> <?= $rows['regional'] ?></td>
                                                     <td><?= number_format($rows['ttr_avg'], 2) ?></td>
                                                 </tr>
                                             <?php }
@@ -264,7 +264,6 @@
                                                 Total Tiket</th>
                                             <th colspan="3">Customer Segment</th>
                                             <th colspan="4">Average TTR</th>
-                                            <th style="vertical-align: middle;" rowspan="2">SLG</th>
                                             <th colspan="2">Compliance</th>
                                         </tr>
                                         <tr>
@@ -283,7 +282,7 @@
                                         <?php if ($regional == 'all')
                                             foreach ($all['regional_list'] as $row) { ?>
                                             <tr>
-                                                <td class="text-left">Regional <?= $row['regional'] ?></td>
+                                                <td class="text-left"><?php if(strcasecmp($row['regional'],'nas')) echo 'Regional' ?> <?= $row['regional'] ?></td>
                                                 <td><?= $row['dbs'] + $row['des'] + $row['dgs'] ?></td>
                                                 <td><?= $row['dbs'] ?></td>
                                                 <td><?= $row['des'] ?></td>
@@ -292,7 +291,6 @@
                                                 <td><?= number_format($row['ttr_des'], 2) ?></td>
                                                 <td><?= number_format($row['ttr_dgs'], 2) ?></td>
                                                 <td><?= number_format($row['ttr_avg'], 2) ?></td>
-                                                <td>0</td>
                                                 <td><?= $row['com'] ?></td>
                                                 <td><?= $row['not_com'] ?></td>
                                             </tr>
@@ -308,7 +306,6 @@
                                                 <td><?= number_format($row['ttr_des'], 2) ?></td>
                                                 <td><?= number_format($row['ttr_dgs'], 2) ?></td>
                                                 <td><?= number_format($row['ttr_avg'], 2) ?></td>
-                                                <td>0</td>
                                                 <td><?= $row['com'] ?></td>
                                                 <td><?= $row['not_com'] ?></td>
                                             </tr>
@@ -326,7 +323,6 @@
                                                 <th><?= number_format($all['ttr_des'], 2) ?></th>
                                                 <th><?= number_format($all['ttr_dgs'], 2) ?></th>
                                                 <th><?= number_format($all['ttr_avg'], 2) ?></th>
-                                                <th>0</th>
                                                 <th><?= $all['com'] ?></th>
                                                 <th><?= $all['not_com'] ?></th>
                                             <?php } else { ?>
@@ -338,7 +334,6 @@
                                                 <th><?= number_format($all['regional_list'][$regional - 1]['ttr_des'], 2) ?></th>
                                                 <th><?= number_format($all['regional_list'][$regional - 1]['ttr_dgs'], 2) ?></th>
                                                 <th><?= number_format($all['regional_list'][$regional - 1]['ttr_avg'], 2) ?></th>
-                                                <th>0</th>
                                                 <th><?= $all['regional_list'][$regional - 1]['com'] ?></th>
                                                 <th><?= $all['regional_list'][$regional - 1]['not_com'] ?></th>
                                             <?php } ?>

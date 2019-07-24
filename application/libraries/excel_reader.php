@@ -753,7 +753,7 @@ class Excel_reader
                             $this->sheets[$this->sn]['numCols'] = ord($this->data[$spos + 10]) | ord($this->data[$spos + 11]) << 8;
                         }
                     }
-                    //echo 'numRows '.$this->numRows.' '.$this->numCols."\n";
+                    // echo 'numRows '.$this->numRows.' '.$this->numCols."\n";
                     break;
                 case SPREADSHEET_EXCEL_READER_TYPE_MERGEDCELLS:
                     $cellRanges = ord($this->data[$spos]) | ord($this->data[$spos + 1]) << 8;
@@ -791,16 +791,16 @@ class Excel_reader
                         //$this->addcell(RKRecord($r));
                     }
                     $this->addcell($row, $column, $string, $raw);
-                    //echo "Type_RK $row $column $string $raw {$this->curformat}\n";
+                    // echo "Type_RK $row $column $string $raw {$this->curformat}\n";
                     break;
                 case SPREADSHEET_EXCEL_READER_TYPE_LABELSST:
                     $row        = ord($this->data[$spos]) | ord($this->data[$spos + 1]) << 8;
                     $column     = ord($this->data[$spos + 2]) | ord($this->data[$spos + 3]) << 8;
                     $xfindex    = ord($this->data[$spos + 4]) | ord($this->data[$spos + 5]) << 8;
                     $index  = $this->_GetInt4d($this->data, $spos + 6);
-                    //var_dump($this->sst);
+                    // var_dump($this->sst);
                     $this->addcell($row, $column, $this->sst[$index]);
-                    //echo "LabelSST $row $column $string\n";
+                    // echo "LabelSST $row $column $string\n";
                     break;
                 case SPREADSHEET_EXCEL_READER_TYPE_MULRK:
                     $row        = ord($this->data[$spos]) | ord($this->data[$spos + 1]) << 8;
@@ -822,7 +822,7 @@ class Excel_reader
                         //$rec['rknumbers'][$i]['xfindex'] = ord($rec['data'][$pos]) | ord($rec['data'][$pos+1]) << 8;
                         $tmppos += 6;
                         $this->addcell($row, $colFirst + $i, $string, $raw);
-                        //echo "MULRK $row ".($colFirst + $i)." $string\n";
+                        // echo "MULRK $row ".($colFirst + $i)." $string\n";
                     }
                     //MulRKRecord($r);
                     // Get the individual cell records from the multiple record
@@ -847,19 +847,19 @@ class Excel_reader
                         //   $this->addcell(NumberRecord($r));
                     }
                     $this->addcell($row, $column, $string, $raw);
-                    //echo "Number $row $column $string\n";
+                    // echo "Number $row $column $string\n";
                     break;
                 case SPREADSHEET_EXCEL_READER_TYPE_FORMULA:
                 case SPREADSHEET_EXCEL_READER_TYPE_FORMULA2:
                     $row    = ord($this->data[$spos]) | ord($this->data[$spos + 1]) << 8;
                     $column = ord($this->data[$spos + 2]) | ord($this->data[$spos + 3]) << 8;
                     if ((ord($this->data[$spos + 6]) == 0) && (ord($this->data[$spos + 12]) == 255) && (ord($this->data[$spos + 13]) == 255)) {
-                        //String formula. Result follows in a STRING record
-                        //echo "FORMULA $row $column Formula with a string<br>\n";
+                        // String formula. Result follows in a STRING record
+                        // echo "FORMULA $row $column Formula with a string<br>\n";
                     } elseif ((ord($this->data[$spos + 6]) == 1) && (ord($this->data[$spos + 12]) == 255) && (ord($this->data[$spos + 13]) == 255)) {
                         //Boolean formula. Result is in +2; 0=false,1=true
                     } elseif ((ord($this->data[$spos + 6]) == 2) && (ord($this->data[$spos + 12]) == 255) && (ord($this->data[$spos + 13]) == 255)) {
-                        //Error formula. Error code is in +2;
+                        // echo "Error $row $column formula. Error code is in +2";
                     } elseif ((ord($this->data[$spos + 6]) == 3) && (ord($this->data[$spos + 12]) == 255) && (ord($this->data[$spos + 13]) == 255)) {
                         //Formula result is a null string.
                     } else {
@@ -879,7 +879,7 @@ class Excel_reader
                             //   $this->addcell(NumberRecord($r));
                         }
                         $this->addcell($row, $column, $string, $raw);
-                        //echo "Number $row $column $string\n";
+                        // echo "Number $row $column $string\n";
                     }
                     break;
                 case SPREADSHEET_EXCEL_READER_TYPE_BOOLERR:
@@ -1001,7 +1001,7 @@ class Excel_reader
 
     function addcell($row, $col, $string, $raw = '')
     {
-        //echo "ADD cel $row-$col $string\n";
+        // echo "ADD cel $row-$col $string\n";
         $this->sheets[$this->sn]['maxrow'] = max($this->sheets[$this->sn]['maxrow'], $row + $this->_rowoffset);
         $this->sheets[$this->sn]['maxcol'] = max($this->sheets[$this->sn]['maxcol'], $col + $this->_coloffset);
         $this->sheets[$this->sn]['cells'][$row + $this->_rowoffset][$col + $this->_coloffset] = $string;

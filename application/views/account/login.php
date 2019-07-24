@@ -30,7 +30,7 @@
                                                     class="form-check-label custom-control-label"
                                                     for="formCheck-1">Remember Me</label></div>
                                         </div>
-                                    </div><button class="btn btn-primary btn-block text-white btn-user"
+                                    </div><button class="btn btn-danger btn-block text-white btn-user"
                                         type="submit">Login</button>
                                     <hr>
                                 </form>

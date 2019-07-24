@@ -46,10 +46,12 @@ class Account extends CI_Controller
             $this->login();
         } else {
             if ($user = $this->mus->check_user_login($username, $password)) {
-                print_r($user);
                 $this->session->set_userdata('userdata', $user);
                 $this->session->set_userdata('login', '1');
-                 redirect('admin');
+                if ($user['status'] == 1)
+                    redirect('admin');
+                else
+                    redirect('user');
             } else {
                 $this->session->set_flashdata("msg_f", "Username atau password anda tidak ditemukan");
                 redirect('account/login');

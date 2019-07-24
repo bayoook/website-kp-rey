@@ -23,16 +23,41 @@ class Admin extends CI_Controller
 			$this->session->set_flashdata("msg_f", "Maaf anda harus login");
 			redirect("account/login");
 		}
+		if ($this->session->userdata('userdata')['status']!=1){
+			redirect("user");
+		}
+		// print_r($this->session->userdata('userdata')['status']);
 		// $this->data['user'] = $this->session->userdata()['userdata']['0'];
 		$this->data['user'] = $this->mus->read_user($this->session->userdata('userdata')['id']);
 		// $this->data['user']['status_name'] = $this->mds->read_status($this->data['user']['status']);
 		// if ($this->data['user']['status_name'] != 'Admin') { }
 		$this->data['IMPORTANT'] = $this->mus->IMPORTANT();
+        $this->data['url'] = 'admin';
 
 		// print_r($_SESSION);
 		$this->session->set_flashdata('IMPORTANT_P', $this->data['IMPORTANT']['new']);
 		$this->session->set_flashdata('IMPORTANT_H', $this->data['IMPORTANT']['too']);
 		$this->session->set_flashdata('IMPORTANT_Y', $this->data['IMPORTANT']['y']);
+		$this->data['menu'] = array( //selain dashboard
+			array(
+				"nama" => "File Upload",
+				"icon" => "fa-file-upload",
+				"title" => "Upload",
+				"url" => "upload"
+			),
+			array(
+				"nama" => "Profile",
+				"icon" => "fa-user",
+				"title" => "Profile",
+				"url" => "profile"
+			),
+			array(
+				"nama" => "User",
+				"icon" => "fa-user-circle",
+				"title" => "User",
+				"url" => "user"
+			)
+		);
 	}
 	public function _404()
 	{
@@ -52,10 +77,13 @@ class Admin extends CI_Controller
 	}
 	public function dashboard($type = 'datin', $regional = 'all')
 	{
-		// print_r($_SESSION['filter_cal']);
 		$this->data['max'] = $this->mdu->get_maximum_date($type);
 		$this->data['min'] = $this->mdu->get_minimum_date($type);
 		$this->data['type_chart'] = 'horizontalBar';
+		if ($this->data['max'] == null)
+			$this->data['max'] = '2030-12-31';
+		if ($this->data['min'] == null)
+			$this->data['min'] = '2000-01-01';
 		// $this->data['type_chart'] = 'line';
 		$start = $this->session->userdata('filter_cal')['start'];
 		$end = $this->session->userdata('filter_cal')['end'];
@@ -118,7 +146,8 @@ class Admin extends CI_Controller
 
 	public function upload_file($type)
 	{
-		$this->load->library('excel_reader');
+		// $this->load->library('excel_reader');
+		$this->load->library('excel_reader2');
 		// upload file xls
 		$target = basename($_FILES['uploadfile']['name']);
 		move_uploaded_file($_FILES['uploadfile']['tmp_name'], $target);
@@ -126,11 +155,13 @@ class Admin extends CI_Controller
 		// beri permisi agar file xls dapat di baca
 		chmod($_FILES['uploadfile']['name'], 0777);
 		// mengambil isi file xls
-		$data = new Excel_reader($_FILES['uploadfile']['name'], false);
-		$dataO = new Excel_reader();
-		//$data->setOutputEncoding('CPa25a');
+		$data = new Excel_reader2($_FILES['uploadfile']['name'], false);
+		$dataO = new Excel_reader2();
+		// print_r($dataO);
+		// $data->setOutputEncoding('ASCII,UTF-8,ISO-8859-15');
 		// print_r($dataO);
 		$hasil = $dataO->read($_FILES['uploadfile']['name']);
+		// print_r($hasil);
 		unlink($_FILES['uploadfile']['name']);
 		if ($hasil == 1076) {
 			$this->session->set_flashdata('msg_f', 'File tidak terbaca atau extensi file tidak sesuai');
@@ -164,21 +195,22 @@ class Admin extends CI_Controller
 		$berhasil = 0;
 
 		for ($i = 1; $i <= $jumlah_kolom; $i++) {
-			if (strcasecmp($data[1][$i], "Customer Name") == 0) $cust_name_col = $i;
-			if (strcasecmp($data[1][$i], "Customer Segment") == 0) $cust_segment_col = $i;
-			if (strcasecmp($data[1][$i], "Service ID") == 0) $serv_id_col = $i;
-			if (strcasecmp($data[1][$i], "Service No") == 0) $serv_no_col = $i;
-			if (strcasecmp($data[1][$i], "Top Priority") == 0) $top_prio_col = $i;
-			if (strcasecmp($data[1][$i], "TTR Customer") == 0) $ttr_cust_col = $i;
+			if (strcasecmp($data[1][$i], "Customer_Name") == 0) $cust_name_col = $i;
+			if (strcasecmp($data[1][$i], "Customer_Segment") == 0) $cust_segment_col = $i;
+			if (strcasecmp($data[1][$i], "SID_Customer") == 0) $serv_id_col = $i;
+			// if (strcasecmp($data[1][$i], "Service No") == 0) $serv_no_col = $i;
+			if (strcasecmp($data[1][$i], "Category Cust") == 0) $top_prio_col = $i;
+			if (strcasecmp($data[1][$i], "TTR_Customer") == 0) $ttr_cust_col = $i;
 			if (strcasecmp($data[1][$i], "COMPLIANCE") == 0) $compliance_col = $i;
 			if (strcasecmp($data[1][$i], "Witel") == 0) $witel_col = $i;
 			if (strcasecmp($data[1][$i], "Regional") == 0) $regional_col = $i;
 			if (strcasecmp($data[1][$i], "exclude") == 0) $exclude_col = $i;
-			if (strcasecmp($data[1][$i], "GAMAS") == 0) $gamas_col = $i;
-			if (strcasecmp($data[1][$i], "Reported Date") == 0) $report_date_col = $i;
+			// if (strcasecmp($data[1][$i], "GAMAS") == 0) $gamas_col = $i;
+			if (strcasecmp($data[1][$i], "Status_Date") == 0) $report_date_col = $i;
 		}
 		$id_history = array();
 		for ($i = 2; $i <= $jumlah_baris; $i++) {
+			// print_r($data[$i]);
 			// menangkap data dan memasukkan ke variabel sesuai dengan kolumnya masing-masing
 
 			if (isset($data[$i][$cust_name_col])) $cust_name = $data[$i][$cust_name_col];
@@ -187,8 +219,6 @@ class Admin extends CI_Controller
 			else $cust_segment = "";
 			if (isset($data[$i][$serv_id_col])) $serv_id = $data[$i][$serv_id_col];
 			else $serv_id = "";
-			if (isset($data[$i][$serv_no_col])) $serv_no = $data[$i][$serv_no_col];
-			else $serv_no = "";
 			if (isset($data[$i][$top_prio_col])) $top_prio = $data[$i][$top_prio_col];
 			else $top_prio = "";
 			if (isset($data[$i][$ttr_cust_col])) $ttr_cust = $data[$i][$ttr_cust_col];
@@ -201,32 +231,29 @@ class Admin extends CI_Controller
 			else $regional = "";
 			if (isset($data[$i][$exclude_col])) $exclude = $data[$i][$exclude_col];
 			else $exclude = "";
-			if (isset($data[$i][$gamas_col])) $gamas = $data[$i][$gamas_col];
-			else $gamas = "";
 			if (isset($data[$i][$report_date_col])) {
 				$report_date = $data[$i][$report_date_col];
 				$report_date = strtotime($report_date);
 				$report_date = date('Y-m-d H:i:s', $report_date);
 			} else $report_date = "";
-
 			$data_save = array(
 				'cust_name' => $cust_name,
 				'cust_segment' => $cust_segment,
 				'serv_id' => $serv_id,
-				'serv_no' => $serv_no,
 				'top_prio' => $top_prio,
 				'ttr_cust' => $ttr_cust,
 				'compliance' => $compliance,
 				'witel' => $witel,
 				'regional' => $regional,
 				'exclude' => $exclude,
-				'gamas' => $gamas,
 				'type' => $type,
 				'status' => 'show',
 				'report_date' => $report_date
 			);
 			$data_save = preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $data_save);
 			$berhasil++;
+
+			// print_r($data[$i][9]);
 			array_push($id_history, $this->mdu->save($data_save));
 		}
 		// hapus kembali file .xls yang di upload tadi
@@ -242,12 +269,12 @@ class Admin extends CI_Controller
 		$data_history = array(
 			'awal' => min($id_history),
 			'akhir' => max($id_history),
-			'tanggal' => date("Y-m-d H:i:s"),
+			'nama_file' => $target,
 			// 'tanggal' => $tanggal
 			'type' => $type,
 			'status' => 'view'
 		);
-		print_r($data_history);
+		// print_r($data_history);
 		$this->mdh->save($data_history);
 		redirect('admin/dashboard/' . $type);
 	}
@@ -314,9 +341,16 @@ class Admin extends CI_Controller
 		// upload file xls
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[3]');
+		if ($type == 'profile') {
+			$gagal = 'admin/profile';
+			$sukses = $gagal;
+		} else {
+			$gagal = 'admin/ubah/edit/' . $id;
+			$sukses = 'admin/user';
+		}
 		if (!$this->form_validation->run()) {
 			$this->session->set_flashdata('msg_f', validation_errors());
-			redirect('admin/ubah/edit/' . $id);
+			redirect($gagal);
 		} else {
 			$form = $this->input->post();
 			$akun = array(
@@ -329,17 +363,12 @@ class Admin extends CI_Controller
 				'photo' => $form['photo'],
 				'status' => ""
 			);
-
-			print_r($this->input->post());
 			if ($type == 'profile') {
 				$akun['status'] = $id_status;
-				$gagal = 'admin/profile';
-				$sukses = $gagal;
 			} else {
 				$akun['status'] = $form['status'];
-				$gagal = 'admin/ubah/edit/' . $id;
-				$sukses = 'admin/user';
 			}
+			// print_r($this->input->post());
 			//print_r($akun);
 			$id_edit = array(
 				'id' => $id

@@ -1,10 +1,10 @@
-            <form id="ganti_gambar" method="POST" enctype="multipart/form-data" action="<?= base_url() ?>admin/ganti_gambar/<?= $user['id'] ?>">
+            <form id="ganti_gambar" method="POST" enctype="multipart/form-data" action="<?= base_url($url) ?>/ganti_gambar/<?= $user['id'] ?>">
                 <input type="file" accept="image/*" id="selectedFile" style="display: none;" name="photo" value="submit" onchange="gantiGambar()">
             </form>
-            <form id="hapus_gambar" method="POST" enctype="multipart/form-data" action="<?= base_url() ?>admin/delete_image/<?= $user['id'] ?>">
+            <form id="hapus_gambar" method="POST" enctype="multipart/form-data" action="<?= base_url($url) ?>/delete_image/<?= $user['id'] ?>">
                 <button id="deletedFile" style="display: none;" value="submit"></button>
             </form>
-            <form name="form" method="POST" enctype="multipart/form-data" action="<?= base_url() ?>admin/proses_edit_user/<?= $user['id'] ?>/profile">
+            <form name="form" method="POST" enctype="multipart/form-data" action="<?= base_url($url) ?>/proses_edit_user/<?= $user['id'] ?>/profile">
                 <div class="row mb-3">
                     <div class="col-xl-2"></div>
                     <div class="col-xl-5">
